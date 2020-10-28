@@ -1,0 +1,232 @@
+﻿@model AIOCMS.Models.tbl_KullaniciGrubu
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Yonetim/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Kullanıcı Grubu Oluşturma</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Adi, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Adi, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Adi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AktifDurumu, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.AktifDurumu)
+                    @Html.ValidationMessageFor(model => model.AktifDurumu, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class=" col-md-12">
+                <h1>İzinler</h1>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" checked="checked" />
+                                Kontroller Adı
+
+                            </th>
+                            <th>
+                                <input type="checkbox" checked="checked" />
+                                Listeleme
+                            </th>
+                            <th>
+                                <input type="checkbox" checked="checked" />
+                                Ekleme
+                            </th>
+                            <th>
+                                <input type="checkbox" checked="checked" />
+                                Düzenleme
+                            </th>
+                            <th>
+                                <input type="checkbox" checked="checked" />
+                                Detay
+                            </th>
+                            <th>
+                                <input type="checkbox" checked="checked" />
+                                Silme
+                            </th>
+                            <th>
+                                <input type="checkbox" checked="checked" />
+                                Kalıcı Silme
+                            </th>
+                            <th>
+                                <input type="checkbox" checked="checked" />
+                                Ozel Yetki
+                            </th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @{ int i = 0; }
+                        @foreach (var item in AIOCMS.Areas.Yonetim.Data.IzinVM.KontrollerAdlari)
+                        {
+                        <tr>
+                            <td>
+                                <input type="checkbox" checked="checked" /> @(string.IsNullOrEmpty(item.Summary)?item.KontrollerAdi:item.Summary)
+                                <input type="hidden" name="tbl_Izinler[@i].KontrollerAdi" value="@item.KontrollerAdi" />
+                                <input type="hidden" class="yetkiClass" name="tbl_Izinler[@i].SYetki" />
+                            </td>
+                            <td><input type="checkbox" checked="checked" /></td>
+                            <td><input type="checkbox" checked="checked" /></td>
+                            <td><input type="checkbox" checked="checked" /></td>
+                            <td><input type="checkbox" checked="checked" /></td>
+                            <td><input type="checkbox" checked="checked" /></td>
+                            <td><input type="checkbox" checked="checked" /></td>
+                            <td><input type="checkbox" checked="checked" /></td>
+
+                        </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@section scripts{
+    <script>
+        var tablom = $('table');
+        var tHeadSatir = tablom.children('thead').children('tr').length;
+        var toplamSatirSayisi = tablom.children('tbody').children('tr').length + tHeadSatir;
+        var toplamSutunSayisi = tablom.children('thead').children("tr:eq(0)").children("th").length;
+        function KolonSecme(satir, sutun, element) {
+            if (sutun == 0 && satir == 0) {
+                tablom.find(':checkbox').prop('checked', $(element).prop('checked'));
+
+                tablom.find('tbody').find('td:not(:eq(0))').find(':checkbox').trigger('change');
+            } else if (sutun == 0) {
+                tablom.find('tbody').find('tr:eq(' + (satir - 1) + ')').find('td:not(:eq(0))').find(':checkbox').prop('checked', $(element).prop('checked')).trigger('change');
+            } else if (satir == 0) {
+
+                tablom.find('tbody').find('tr').find('td:eq(' + sutun + ')').find(':checkbox').prop('checked', $(element).prop('checked')).trigger('change');
+            } else {
+                
+                var sutundakiCheckli = tablom.find('tbody').find('tr').find('td:eq(' + sutun + ')').find('input:checked').length;
+                var satirdakiCheckli = element.closest('tr').find('input:checked').length;
+                satirdakiCheckli = satirdakiCheckli +(element.closest('tr').find('td:eq(0)').find('input:checked').length==0?0:-1);
+                if (sutundakiCheckli < (toplamSatirSayisi - tHeadSatir)) {
+                    tablom.find('thead').find('tr').find('th:eq(' + sutun + ')').find(':checkbox').prop('checked', false).prop('indeterminate', true);
+                }
+                else {
+                    tablom.find('thead').find('tr').find('th:eq(' + sutun + ')').find(':checkbox').prop('checked', $(element).prop('checked')).prop('indeterminate', false);
+                }
+                if (satirdakiCheckli < (toplamSatirSayisi-1) && satirdakiCheckli!=0) {
+                    element.closest('tr').find('td:eq(0)').find(':checkbox').prop('checked', false).prop('indeterminate', true);
+
+                } else {
+                    element.closest('tr').find('td:eq(0)').find(':checkbox').prop('checked', $(element).prop('checked')).prop('indeterminate', false);
+                }
+                YetkiAta(element);
+            }
+        }
+        tablom.find('input[type="checkbox"]').change(function () {
+            var konum = SatirSutunBulucu($(this));
+            KolonSecme(konum.satir, konum.sutun, $(this));
+        });
+        function SatirSutunBulucu(element) {
+            var bulunanEleman = tablom.find(element);
+            var sutun = bulunanEleman.parent().index();
+            var tNe = bulunanEleman.closest("thead").length;
+            var satir = bulunanEleman.parent().parent().index();
+            if (tNe == 0) {
+                satir += tHeadSatir;
+            }
+            return { satir, sutun };
+        }
+        function YetkiAta(element) {
+            var yetkiHiddenInput = $(element).closest('tr').find('td:eq(0)').find('.yetkiClass');
+            var yetki = '';
+            $(element).closest('tr').find('td:not(:eq(0))').find(':checkbox').each(function (i, e) {
+                if ($(e).prop('checked')) {
+                    yetki = yetki + "1";
+                } else {
+                    yetki = yetki + "0";
+                }
+            });
+            $(yetkiHiddenInput).val(yetki);
+        }
+        $(document).ready( function () {
+            tablom.find('thead').find('tr:eq(0)').find('th:eq(0)').find(':checkbox').trigger('change');
+
+
+        });
+    </script>
+
+}
+
+
+
+
+@*@section scripts{
+        <script>
+            function TopluCheck(element, className) {
+                var isaretDurumu = $(element).prop('checked');
+                $(className).each(function (i, e) {
+                    $(e).prop('checked', isaretDurumu);
+                });
+            }
+            function TopluCheckKontrol(element, className) {
+                var elClass = $(element).attr('class').split(' ')[0];
+                var kontrol = true;
+                $('.' + elClass).each(function (i, e) {
+
+                    if (!$(e).prop('checked')) {
+                        kontrol = false;
+                        return;
+                    }
+                });
+                var kontrol2 = false;
+                $('.' + elClass).each(function (i, e) {
+                    if ($(e).prop('checked')) {
+                        kontrol2 = true;
+                        return;
+                    }
+                });
+                if (kontrol) {
+                    $(className).prop('checked', 'checked');
+                    $(className).prop('indeterminate', false);
+                } else if (!kontrol && kontrol2) {
+
+                    $(className).prop('checked', false);
+                    $(className).prop('indeterminate', true);
+                }
+                else {
+                    $(className).prop('checked', false);
+                    $(className).prop('indeterminate', false);
+                }
+                //$(className).each(function (i, e) {
+                //    $(e).prop('checked', isaretDurumu);
+                //    //$(e).prop('indeterminate', true);
+                //});
+            }
+
+        </script>
+
+    }*@

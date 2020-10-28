@@ -1,0 +1,131 @@
+﻿@model AIOCMS.Models.tbl_Icerik
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Yonetim/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tbl_Icerik</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Baslik)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Baslik)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Icerik)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Icerik)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Resim)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Resim)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OlusturmaTarihi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OlusturmaTarihi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GuncellemeTarihi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GuncellemeTarihi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SilinmeTarihi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SilinmeTarihi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AktifDurumu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AktifDurumu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OnayDurumu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OnayDurumu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IcerikTipi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IcerikTipi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OkunmaSuresi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OkunmaSuresi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OkunmaSayisi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OkunmaSayisi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tbl_Icerik2.Baslik)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tbl_Icerik2.Baslik)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tbl_Kullanici.KullaniciAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tbl_Kullanici.KullaniciAdi)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

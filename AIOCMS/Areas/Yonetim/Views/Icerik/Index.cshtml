@@ -1,0 +1,112 @@
+﻿@model IEnumerable<AIOCMS.Models.tbl_Icerik>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Yonetim/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Baslik)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Icerik)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Url)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Resim)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OlusturmaTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuncellemeTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SilinmeTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AktifDurumu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OnayDurumu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IcerikTipi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OkunmaSuresi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OkunmaSayisi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tbl_Icerik2.Baslik)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tbl_Kullanici.KullaniciAdi)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Baslik)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Icerik)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Url)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Resim)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OlusturmaTarihi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuncellemeTarihi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SilinmeTarihi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AktifDurumu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OnayDurumu)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IcerikTipi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OkunmaSuresi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OkunmaSayisi)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tbl_Icerik2.Baslik)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tbl_Kullanici.KullaniciAdi)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

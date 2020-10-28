@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="73f921e73c2348e0be39ac4fe51f56ee" Name="Diagram1" ZoomLevel="79">
+        <EntityTypeShape EntityType="CMSDBModel.tbl_Ayarlar" Width="1.5" PointX="9.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CMSDBModel.tbl_Icerik" Width="1.5" PointX="5.25" PointY="6" />
+        <EntityTypeShape EntityType="CMSDBModel.tbl_Kullanici" Width="1.5" PointX="3" PointY="6.75" />
+        <EntityTypeShape EntityType="CMSDBModel.tbl_KullaniciGrubu" Width="1.5" PointX="0.75" PointY="5.375" />
+        <EntityTypeShape EntityType="CMSDBModel.tbl_Tags" Width="1.5" PointX="7.5" PointY="4.875" />
+        <EntityTypeShape EntityType="CMSDBModel.tbl_Yorum" Width="1.5" PointX="7.5" PointY="8.125" />
+        <AssociationConnector Association="CMSDBModel.FK_tbl_Icerik_tbl_Icerik" />
+        <AssociationConnector Association="CMSDBModel.FK_tbl_Icerik_tbl_Kullanici" />
+        <AssociationConnector Association="CMSDBModel.FK_tbl_Yorum_tbl_Icerik" />
+        <AssociationConnector Association="CMSDBModel.FK_tbl_Kullanici_tbl_KullaniciGrubu" />
+        <AssociationConnector Association="CMSDBModel.FK_tbl_Yorum_tbl_Yorum" />
+        <AssociationConnector Association="CMSDBModel.tbl_TagIcerik" />
+        <EntityTypeShape EntityType="CMSDBModel.tbl_Izinler" Width="1.5" PointX="3" PointY="2.25" />
+        <AssociationConnector Association="CMSDBModel.FK_tbl_Izinler_tbl_KullaniciGrubu" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

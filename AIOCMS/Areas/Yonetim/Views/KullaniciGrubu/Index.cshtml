@@ -1,0 +1,102 @@
+﻿@model IEnumerable<AIOCMS.Models.tbl_KullaniciGrubu>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Yonetim/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @* @Html.ActionLink("Yeni Oluştur", "Create")*@
+    <a href="Create">Yeni Oluştur</a>
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Adi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OlusturmaTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuncellemeTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SilinmeTarihi)
+        </th>
+        <th>
+            Aktfiliğim
+            @*@Html.DisplayNameFor(model => model.AktifDurumu)*@
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OlusturmaTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuncellemeTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SilinmeTarihi)
+            </td>
+            <td>
+                <input type="checkbox" disabled="disabled" @(item.AktifDurumu ? "checked" : "") />
+                @* @Html.DisplayFor(modelItem => item.AktifDurumu)*@
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                <a href="#" class="silmeButonu btn btn-danger" data-silmeid="@item.Id">Sil</a>
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.Id },new {@class="silmeButonu btn btn-danger",title="silem butonu içerir" })*@
+            </td>
+        </tr>
+    }
+
+</table>
+<div id="popupDivim" style=" position: absolute; top: 50%; left: 25%; border: 1px solid; border-radius: 5px; padding: 10px; background: aqua;display:none;">
+    <h1>Bu kaydı silmek istiyormusun ?</h1>
+    <div style="width:100%;text-align:right;">
+        @*@Html.AntiForgeryToken()*@
+        <a id="evetButonu" href="#" class="btn btn-primary popupKapama">Evet</a>
+        <a href="#" class="btn btn-danger popupKapama">Hayır</a>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        var silmeId = 0;
+        var silinecekSatir;
+        $('.silmeButonu').click(function () {
+            $('#popupDivim').show();
+            silmeId = parseInt($(this).attr("data-silmeid"));
+            silinecekSatir=   $(this).parent().parent();
+        });
+        $('.popupKapama').click(function () {
+            $('#popupDivim').hide();        
+        });
+        $('#evetButonu').click(function () {
+            if (silmeId != 0) {
+                //var headerlarim = { __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val() };
+                $.ajax({
+                    url: 'https://localhost:44391/Yonetim/KullaniciGrubu/Delete/' + silmeId,
+                    method: 'post',
+                    //headers: headerlarim,
+                    //data: '',
+                    success: function () {
+                        $(silinecekSatir).remove();
+                    }, error: function () {
+                    }
+                });
+                silmeId = 0;
+            }
+        });
+    </script>
+}
