@@ -131,7 +131,11 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// Icerik Kalıcı olarak silinir Bütün yetkiler varsa kullanıcının kim olduğuna bakılmaz
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [Yetki(enmYetkiler.KaliciSilme)]
         public ActionResult KaliciSil(int id)
         {
