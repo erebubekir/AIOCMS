@@ -1,19 +1,21 @@
-﻿@model IEnumerable<AIOCMS.Models.tbl_KullaniciGrubu>
+﻿@model IEnumerable<AIOCMS.Models.tbl_Yorum>
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Areas/Yonetim/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Yeni Oluştur", "Create")   
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Adi)
+            @Html.DisplayNameFor(model => model.AdiSoyadi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Yorum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Puan)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.OlusturmaTarihi)
@@ -25,8 +27,19 @@
             @Html.DisplayNameFor(model => model.SilinmeTarihi)
         </th>
         <th>
-            Aktfiliğim
-            @*@Html.DisplayNameFor(model => model.AktifDurumu)*@
+            @Html.DisplayNameFor(model => model.AktifDurumu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BegeniSayisi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BegenmemeSayisi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tbl_Icerik.Baslik)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tbl_Yorum2.AdiSoyadi)
         </th>
         <th></th>
     </tr>
@@ -35,7 +48,13 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Adi)
+                @Html.DisplayFor(modelItem => item.AdiSoyadi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Yorum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Puan)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OlusturmaTarihi)
@@ -47,14 +66,25 @@
                 @Html.DisplayFor(modelItem => item.SilinmeTarihi)
             </td>
             <td>
-                <input type="checkbox" disabled="disabled" @(item.AktifDurumu ? "checked" : "") />
-                @* @Html.DisplayFor(modelItem => item.AktifDurumu)*@
+                @Html.DisplayFor(modelItem => item.AktifDurumu)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.DisplayFor(modelItem => item.BegeniSayisi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BegenmemeSayisi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tbl_Icerik.Baslik)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tbl_Yorum2.AdiSoyadi)
+            </td>
+            <td>
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 <a href="#" class="silmeButonu btn btn-danger" data-silmeid="@item.Id">Sil</a>
-                @*@Html.ActionLink("Delete", "Delete", new { id=item.Id },new {@class="silmeButonu btn btn-danger",title="silem butonu içerir" })*@
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.Id },new {@class="silmeButonu btn btn-danger",title="silem butonu içerir" })*@               
             </td>
         </tr>
     }
@@ -68,7 +98,6 @@
         <a href="#" class="btn btn-danger popupKapama">Hayır</a>
     </div>
 </div>
-
 @section scripts{
     <script>
         var silmeId = 0;
@@ -79,13 +108,13 @@
             silinecekSatir=   $(this).parent().parent();
         });
         $('.popupKapama').click(function () {
-            $('#popupDivim').hide();        
+            $('#popupDivim').hide();
         });
         $('#evetButonu').click(function () {
             if (silmeId != 0) {
                 //var headerlarim = { __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val() };
                 $.ajax({
-                    url: 'https://localhost:44391/Yonetim/KullaniciGrubu/Delete/' + silmeId,
+                    url: 'https://localhost:44391/Yonetim/Yorum/Delete/' + silmeId,
                     method: 'post',
                     //headers: headerlarim,
                     //data: '',
