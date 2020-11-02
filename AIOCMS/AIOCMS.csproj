@@ -134,6 +134,7 @@
     <Compile Include="Areas\Yonetim\Controllers\KullaniciController.cs" />
     <Compile Include="Areas\Yonetim\Controllers\KullaniciGrubuController.cs" />
     <Compile Include="Areas\Yonetim\Controllers\KullaniciIslemleriController.cs" />
+    <Compile Include="Areas\Yonetim\Controllers\TagsController.cs" />
     <Compile Include="Areas\Yonetim\Data\CommonExtensions.cs" />
     <Compile Include="Areas\Yonetim\Data\Crypto.cs" />
     <Compile Include="Areas\Yonetim\Data\enmYetkiler.cs" />
@@ -237,6 +238,11 @@
     <Content Include="Areas\Yonetim\Views\KullaniciGrubu\Index.cshtml" />
     <Content Include="Areas\Yonetim\Views\KullaniciIslemleri\Giris.cshtml" />
     <Content Include="Areas\Yonetim\Views\KullaniciIslemleri\OturumGiris.cshtml" />
+    <Content Include="Areas\Yonetim\Views\Tags\Create.cshtml" />
+    <Content Include="Areas\Yonetim\Views\Tags\Delete.cshtml" />
+    <Content Include="Areas\Yonetim\Views\Tags\Details.cshtml" />
+    <Content Include="Areas\Yonetim\Views\Tags\Edit.cshtml" />
+    <Content Include="Areas\Yonetim\Views\Tags\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
