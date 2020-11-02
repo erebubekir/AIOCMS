@@ -83,16 +83,16 @@
             <td>
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                <a href="#" class="silmeButonu btn btn-danger" data-silmeid="@item.Id">Sil</a>
+                <a href="#" class="silmeButonu btn btn-danger" data-type="silme" data-silmeid="@item.Id">Sil</a>
                 @*@Html.ActionLink("Delete", "Delete", new { id=item.Id },new {@class="silmeButonu btn btn-danger",title="silem butonu içerir" })*@ 
-            <a href="#" class="aktiflikButonu btn btn-default" data-silmeid="@item.Id">aktiflik durumu</a>
+            <a href="#" class="silmeButonu btn btn-default" data-type="aktiflik" data-silmeid="@item.Id">aktiflik durumu</a>
             </td>
         </tr>
     }
 
 </table>
 <div id="popupDivim" style=" position: absolute; top: 50%; left: 25%; border: 1px solid; border-radius: 5px; padding: 10px; background: aqua;display:none;">
-    <h1>Bu kaydı silmek istiyormusun ?</h1>
+    <h1>Bu kaydı değiştirmek istiyor musun ?</h1>
     <div style="width:100%;text-align:right;">
         @*@Html.AntiForgeryToken()*@
         <a id="evetButonu" href="#" class="btn btn-primary popupKapama">Evet</a>
@@ -103,9 +103,20 @@
     <script>
         var silmeId = 0;
         var silinecekSatir;
+        var str;
+        var result;
         $('.silmeButonu').click(function () {
-            $('#popupDivim').show();
+            $('#popupDivim').show();         
+
             silmeId = parseInt($(this).attr("data-silmeid"));
+            if (String($(this).attr("data-type")) == "silme") {
+                str = 'https://localhost:44391/Yonetim/Yorum/Delete/' + silmeId;
+                result = "silme";
+            }
+            else if (String($(this).attr("data-type")) == "aktiflik") {
+                str = 'https://localhost:44391/Yonetim/Yorum/Aktiflik/' + silmeId;
+                result = "aktiflik";
+            }
             silinecekSatir=   $(this).parent().parent();
         });
         $('.popupKapama').click(function () {
@@ -113,15 +124,24 @@
         });
         $('#evetButonu').click(function () {
             if (silmeId != 0) {
+                console.log(str);
                 //var headerlarim = { __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val() };
+               
                 $.ajax({
                    
-                    url: 'https://localhost:44391/Yonetim/Yorum/Delete/' + silmeId,
+                    url: str,
                     method: 'post',
                     //headers: headerlarim,
                     //data: '',
                     success: function () {
-                        $(silinecekSatir).remove();
+                        if (result == "silme")
+                            $(silinecekSatir).remove();
+                        else if (result = "aktiflik")
+                            if ($(silinecekSatir).find(':checkbox').attr('checked') == 'checked') {
+                                $(silinecekSatir).find(':checkbox').removeAttr('checked');
+                            } else {
+                                $(silinecekSatir).find(':checkbox').prop('checked', 'checked');
+                            }
                     }, error: function () {
                     }
                 });

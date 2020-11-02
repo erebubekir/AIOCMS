@@ -129,7 +129,12 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         public ActionResult Aktiflik(int id)
         {
             tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
-            tbl_Yorum.AktifDurumu = true;
+            if(tbl_Yorum.AktifDurumu == true)
+                tbl_Yorum.AktifDurumu = false;
+            else 
+                tbl_Yorum.AktifDurumu = true;
+
+
             //db.Entry(tbl_Yorum).State = EntityState.Modified;
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
