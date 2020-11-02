@@ -7,10 +7,9 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
-{
+<form onsubmit="return create($(this));">
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>tbl_Tags</h4>
         <hr />
@@ -20,30 +19,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Adi, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Adi, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.OlusturmaTarihi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OlusturmaTarihi, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OlusturmaTarihi, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.GuncellemeTarihi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.GuncellemeTarihi, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.GuncellemeTarihi, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SilinmeTarihi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SilinmeTarihi, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SilinmeTarihi, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -71,7 +46,7 @@
             </div>
         </div>
     </div>
-}
+</form>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -80,3 +55,27 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script>
+    function create(that) {
+        var formData = $(that).serialize();
+        jQuery.ajax({
+            method: "post", // gönderme tipi
+            url: "../Tags/create", // gönderdiğimiz Adres
+            data: formData, // gönderilcek veriler
+            success: function (cevap) { // eğer başarılı ise gelen cevabı cevap değişkenine basar
+                cevap = $.parseJSON(cevap);// Gelen Değeri Json Olarak Parse Ediyoruz
+                if (cevap.status == "success") {
+
+                    swal("Ekleme İşlemi Başarılı", "Listeye Yönelendirileceksiniz", cevap.status).then((value) => {
+                        location.href = "../Tags";
+                    });;
+
+
+                }
+                return false;
+            }
+        });
+        return false;
+    }
+</script>

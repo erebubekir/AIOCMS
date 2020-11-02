@@ -35,11 +35,13 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     @RenderSection("scripts", required: false)
     <script>
         setTimeout(function () {
             location.reload();
-        },601*1000);
+        }, 601 * 1000);
     </script>
 </body>
 </html>

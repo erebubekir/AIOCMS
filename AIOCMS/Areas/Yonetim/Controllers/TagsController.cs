@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using AIOCMS.Areas.Yonetim.Data;
 using AIOCMS.Models;
+using Newtonsoft.Json;
 
 namespace AIOCMS.Areas.Yonetim.Controllers
 {
@@ -56,18 +57,35 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Ekleme)]
-        public ActionResult Create(tbl_Tags tbl_Tags)
+        public string Create(tbl_Tags tbl_Tags)
         {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+
             if (ModelState.IsValid)
             {
+                var toplamUrl = db.tbl_Tags.Where(d => d.Url == tbl_Tags.Url).Count();
+                if (toplamUrl < 1)
+                {
+                    tbl_Tags.OlusturmaTarihi = DateTime.Now;
+                    db.tbl_Tags.Add(tbl_Tags);
+                    db.SaveChanges();
+                    result["status"] = "success";
+                    result["message"] = "Kayıt Başarıyla Eklendi";
+                }
+                else
+                {
+                    result["status"] = "error";
+                    result["message"] = "Bu Url Başka Bir Yerde Kullanılmış";
+                }
 
-                tbl_Tags.OlusturmaTarihi = DateTime.Now;
-                db.tbl_Tags.Add(tbl_Tags);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            }
+            else
+            {
+                result["status"] = "error";
+                result["message"] = "Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz";
             }
 
-            return View(tbl_Tags);
+            return JsonConvert.SerializeObject(result);
         }
 
         // GET: Yonetim/Tags/Edit/5
