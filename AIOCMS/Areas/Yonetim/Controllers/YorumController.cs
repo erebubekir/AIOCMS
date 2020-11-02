@@ -123,6 +123,17 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+        // POST: Yonetim/Yorum/Delete/5
+        [HttpPost, ActionName("Aktiflik")]
+        // [ValidateAntiForgeryToken]
+        public ActionResult Aktiflik(int id)
+        {
+            tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
+            tbl_Yorum.AktifDurumu = true;
+            //db.Entry(tbl_Yorum).State = EntityState.Modified;
+            db.SaveChanges();
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
 
         protected override void Dispose(bool disposing)
         {
