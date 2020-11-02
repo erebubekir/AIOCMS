@@ -1,0 +1,152 @@
+﻿@model IEnumerable<AIOCMS.Models.tbl_Yorum>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AdiSoyadi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Yorum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Puan)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OlusturmaTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuncellemeTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SilinmeTarihi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AktifDurumu)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BegeniSayisi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BegenmemeSayisi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tbl_Icerik.Baslik)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tbl_Yorum2.AdiSoyadi)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdiSoyadi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Yorum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Puan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OlusturmaTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuncellemeTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SilinmeTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AktifDurumu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BegeniSayisi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BegenmemeSayisi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tbl_Icerik.Baslik)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tbl_Yorum2.AdiSoyadi)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <a href="#" class="silmeButonu btn btn-danger" data-type="silme" data-silmeid="@item.Id">Sil</a>
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.Id },new {@class="silmeButonu btn btn-danger",title="silem butonu içerir" })*@ 
+            <a href="#" class="silmeButonu btn btn-default" data-type="aktiflik" data-silmeid="@item.Id">aktiflik durumu</a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div id="popupDivim" style=" position: absolute; top: 50%; left: 25%; border: 1px solid; border-radius: 5px; padding: 10px; background: aqua;display:none;">
+    <h1>Bu kaydı değiştirmek istiyor musun ?</h1>
+    <div style="width:100%;text-align:right;">
+        @*@Html.AntiForgeryToken()*@
+        <a id="evetButonu" href="#" class="btn btn-primary popupKapama">Evet</a>
+        <a href="#" class="btn btn-danger popupKapama">Hayır</a>
+    </div>
+</div>
+@section scripts{
+    <script>
+        var silmeId = 0;
+        var silinecekSatir;
+        var str;
+        var result;
+        $('.silmeButonu').click(function () {
+            $('#popupDivim').show();         
+
+            silmeId = parseInt($(this).attr("data-silmeid"));
+            if (String($(this).attr("data-type")) == "silme") {
+                str = 'https://localhost:44391/Yonetim/Yorum/Delete/' + silmeId;
+                result = "silme";
+            }
+            else if (String($(this).attr("data-type")) == "aktiflik") {
+                str = 'https://localhost:44391/Yonetim/Yorum/Aktiflik/' + silmeId;
+                result = "aktiflik";
+            }
+            silinecekSatir=   $(this).parent().parent();
+        });
+        $('.popupKapama').click(function () {
+            $('#popupDivim').hide();
+        });
+        $('#evetButonu').click(function () {
+            if (silmeId != 0) {
+                console.log(str);
+                //var headerlarim = { __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val() };
+               
+                $.ajax({
+                   
+                    url: str,
+                    method: 'post',
+                    //headers: headerlarim,
+                    //data: '',
+                    success: function () {
+                        if (result == "silme")
+                            $(silinecekSatir).remove();
+                        else if (result = "aktiflik")
+                            if ($(silinecekSatir).find(':checkbox').attr('checked') == 'checked') {
+                                $(silinecekSatir).find(':checkbox').removeAttr('checked');
+                            } else {
+                                $(silinecekSatir).find(':checkbox').prop('checked', 'checked');
+                            }
+                    }, error: function () {
+                    }
+                });
+                silmeId = 0;
+            }
+        });
+    </script>
+}
