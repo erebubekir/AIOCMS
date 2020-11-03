@@ -12,7 +12,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 {
     public class YorumController : Controller
     {
-        private CMSDBEntities db = new CMSDBEntities();
+        private CMSDBEntities2 db = new CMSDBEntities2();
 
         // GET: Yonetim/Yorum
         public ActionResult Index()

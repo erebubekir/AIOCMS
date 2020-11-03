@@ -14,7 +14,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 {
     public class TagsController : Controller
     {
-        private CMSDBEntities db = new CMSDBEntities();
+        private CMSDBEntities2 db = new CMSDBEntities2();
 
         // GET: Yonetim/Tags
         [Yetki(enmYetkiler.Listeleme)]

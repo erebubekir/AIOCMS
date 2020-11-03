@@ -17,7 +17,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
     [Yetki(enmYetkiler.ButunYetkiler)]
     public class KullaniciGrubuController : Controller
     {
-        private CMSDBEntities db = new CMSDBEntities();
+        private CMSDBEntities2 db = new CMSDBEntities2();
 
         // GET: Yonetim/KullaniciGrubu
         public ActionResult Index()

@@ -48,7 +48,7 @@ namespace AIOCMS
             }
             IzinVM.KontrollerAdlari = kontTipleri;
 
-            CMSDBEntities db = new CMSDBEntities();
+            CMSDBEntities2 db = new CMSDBEntities2();
             var grups = db.tbl_KullaniciGrubu.ToList();
            
             foreach (var item in grups)

@@ -29,7 +29,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         public ActionResult Giris(string KullaniciAdi, string Sifre)
         {
-            CMSDBEntities db = new CMSDBEntities();
+            CMSDBEntities2 db = new CMSDBEntities2();
             if (Request.Cookies["KullaniciAdiCk"] != null)
             {
                 KullaniciAdi = Crypto.SifreyiCozAES(Request.Cookies["KullaniciAdiCk"].Value, Crypto.paylasilanAnahtar);
