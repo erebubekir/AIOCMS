@@ -14,13 +14,13 @@ namespace AIOCMS.Areas.Yonetim.Controllers
     
     /// <summary>
     /// Yorum işlmeleri
-    /// </summary>
-    [Yetki(enmYetkiler.ButunYetkiler)]
+    /// </summary>   
     public class YorumController : Controller
     {
         private CMSDBEntities2 db = new CMSDBEntities2();
 
         // GET: Yonetim/Yorum
+        [Yetki(enmYetkiler.Listeleme)]
         public ActionResult Index()
         {
             var tbl_Yorum = db.tbl_Yorum.Include(t => t.tbl_Icerik).Include(t => t.tbl_Yorum2);
@@ -28,6 +28,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         }
 
         // GET: Yonetim/Yorum/Details/5
+        [Yetki(enmYetkiler.Detay)]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -43,6 +44,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         }
 
         // GET: Yonetim/Yorum/Create
+        [Yetki(enmYetkiler.Ekleme)]
         public ActionResult Create()
         {
             ViewBag.IcerikId = new SelectList(db.tbl_Icerik, "Id", "Baslik");
@@ -55,6 +57,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Yetki(enmYetkiler.Ekleme)]
         public ActionResult Create([Bind(Include = "Id,AdiSoyadi,Yorum,Puan,UstId,IcerikId,OlusturmaTarihi,GuncellemeTarihi,SilinmeTarihi,AktifDurumu,BegeniSayisi,BegenmemeSayisi")] tbl_Yorum tbl_Yorum)
         {
             if (ModelState.IsValid)
@@ -70,6 +73,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         }
 
         // GET: Yonetim/Yorum/Edit/5
+        [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -91,6 +95,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
         public ActionResult Edit([Bind(Include = "Id,AdiSoyadi,Yorum,Puan,UstId,IcerikId,OlusturmaTarihi,GuncellemeTarihi,SilinmeTarihi,AktifDurumu,BegeniSayisi,BegenmemeSayisi")] tbl_Yorum tbl_Yorum)
         {
             if (ModelState.IsValid)
@@ -105,6 +110,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         }
 
         // GET: Yonetim/Yorum/Delete/5
+        [Yetki(enmYetkiler.Silme)]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -121,7 +127,8 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 
         // POST: Yonetim/Yorum/Delete/5
         [HttpPost, ActionName("Delete")]
-       // [ValidateAntiForgeryToken]
+        [Yetki(enmYetkiler.KaliciSilme)]
+        // [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
@@ -129,9 +136,11 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+
         // POST: Yonetim/Yorum/Aktiflik/5
         [HttpPost, ActionName("Aktiflik")]
         // [ValidateAntiForgeryToken]
+        [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
         public ActionResult Aktiflik(int id)
         {
             tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
@@ -139,7 +148,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                 tbl_Yorum.AktifDurumu = false;
             else 
                 tbl_Yorum.AktifDurumu = true;
-
+            db.Entry(tbl_Yorum).State = EntityState.Modified;
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

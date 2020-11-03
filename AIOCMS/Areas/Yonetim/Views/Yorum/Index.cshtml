@@ -81,8 +81,7 @@
                 @Html.DisplayFor(modelItem => item.tbl_Yorum2.AdiSoyadi)
             </td>
             <td>
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |                
                 <a href="#" class="silmeButonu btn btn-danger" data-type="silme" data-silmeid="@item.Id">Sil</a>
                 @*@Html.ActionLink("Delete", "Delete", new { id=item.Id },new {@class="silmeButonu btn btn-danger",title="silem butonu içerir" })*@ 
             <a href="#" class="silmeButonu btn btn-default" data-type="aktiflik" data-silmeid="@item.Id">aktiflik durumu</a>
