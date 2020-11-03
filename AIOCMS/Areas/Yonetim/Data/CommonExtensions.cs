@@ -18,38 +18,34 @@ namespace AIOCMS.Areas.Yonetim.Data
         public static string ToIntStringBit(this int intValue)
         {
             string yetki = "";
-            //1010101
-            //0110100
-            //1*2^6+0*2^5+...1*2^0
-            int sonHane = intValue % 2 == 1 ? 1 : 0;
-            intValue = intValue - sonHane;
-            while (intValue > 1)
+           
+            while (intValue > 0)
             {
-                if(intValue % 2 == 0)
+                if (intValue % 2 == 0)
                 {
-                    yetki += "1";
+                    yetki = "0" + yetki;
                 }
                 else
                 {
-                    yetki += "0";
-                    intValue--;
+                    yetki = "1" + yetki;
                 }
-                    
-                intValue = intValue / 2;
+
+                intValue = (int)Math.Floor(intValue / 2.0);
             }
-            yetki += sonHane;
+
             //typeof(enmYetkiler).GetProperties().Count();
             int len = 0;
-            int ToplamYetki = (int)enmYetkiler.ButunYetkiler + 1;            
-            while (ToplamYetki>1)
+            int ToplamYetki = (int)enmYetkiler.ButunYetkiler + 1;
+            while (ToplamYetki > 1)
             {
                 len++;
                 ToplamYetki = ToplamYetki / 2;
             }
-            for (int i = (int)enmYetkiler.ButunYetkiler; i > yetki.Length; i--)
+            int yetkiLen = yetki.Length;
+            for (int i = len; i > yetkiLen; i--)
             {
                 yetki = "0" + yetki;
-            } 
+            }
             return yetki;
         }
     }
