@@ -110,16 +110,32 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
-        public ActionResult Edit(tbl_Tags tbl_Tags)
+        public string Edit(tbl_Tags tbl_Tags)
         {
+            Dictionary<string, string> result = new Dictionary<string, string>();
             if (ModelState.IsValid)
             {
-                tbl_Tags.GuncellemeTarihi = DateTime.Now;
-                db.Entry(tbl_Tags).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var toplamUrl = db.tbl_Tags.Where(d => d.Url == tbl_Tags.Url).Where(d => d.Id != tbl_Tags.Id).Count();
+                if (toplamUrl < 1)
+                {
+                    tbl_Tags.GuncellemeTarihi = DateTime.Now;
+                    db.Entry(tbl_Tags).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    result["status"] = "error";
+                    result["message"] = "Bu Url Başka Bir Yerde Kullanılmış";
+                }
+
             }
-            return View(tbl_Tags);
+            else
+            {
+                result["status"] = "error";
+                result["message"] = "Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz";
+            }
+
+            return JsonConvert.SerializeObject(result);
         }
 
         // GET: Yonetim/Tags/Delete/5
