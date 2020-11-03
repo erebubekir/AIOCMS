@@ -118,9 +118,11 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                 var toplamUrl = db.tbl_Tags.Where(d => d.Url == tbl_Tags.Url).Where(d => d.Id != tbl_Tags.Id).Count();
                 if (toplamUrl < 1)
                 {
-                    tbl_Tags.GuncellemeTarihi = DateTime.Now;
+                    tbl_Tags.OlusturmaTarihi = DateTime.Now;
                     db.Entry(tbl_Tags).State = EntityState.Modified;
                     db.SaveChanges();
+                    result["status"] = "success";
+                    result["message"] = "Kayıt Başarıyla Güncellendi";
                 }
                 else
                 {
