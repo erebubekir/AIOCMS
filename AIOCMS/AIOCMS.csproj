@@ -215,6 +215,7 @@
       <DependentUpon>AIOCMSDB.edmx</DependentUpon>
       <LastGenOutput>AIOCMSDB.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\ajaxSpeak.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Yonetim\Views\web.config" />
@@ -273,19 +274,13 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="web.config" />
+    <Content Include="Web.config" />
     <None Include="Web.config.example" />
     <None Include="Web.config.Debug.example">
       <DependentUpon>Web.config.example</DependentUpon>
     </None>
     <None Include="Web.config.Release.example">
       <DependentUpon>Web.config.example</DependentUpon>
-    </None>
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -118,9 +118,11 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                 var toplamUrl = db.tbl_Tags.Where(d => d.Url == tbl_Tags.Url).Where(d => d.Id != tbl_Tags.Id).Count();
                 if (toplamUrl < 1)
                 {
-                    tbl_Tags.GuncellemeTarihi = DateTime.Now;
+                    tbl_Tags.OlusturmaTarihi = DateTime.Now;
                     db.Entry(tbl_Tags).State = EntityState.Modified;
                     db.SaveChanges();
+                    result["status"] = "success";
+                    result["message"] = "Kayıt Başarıyla Güncellendi";
                 }
                 else
                 {
@@ -151,7 +153,10 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             {
                 return HttpNotFound();
             }
-            return View(tbl_Tags);
+            tbl_Tags.SilinmeTarihi = DateTime.Now;
+            db.Entry(tbl_Tags).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // POST: Yonetim/Tags/Delete/5
@@ -161,6 +166,10 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         public ActionResult KaliciSil(int id)
         {
             tbl_Tags tbl_Tags = db.tbl_Tags.SingleOrDefault(d => d.Id == id);
+            if (tbl_Tags == null)
+            {
+                return HttpNotFound();
+            }
             db.tbl_Tags.Remove(tbl_Tags);
             db.SaveChanges();
             return RedirectToAction("Index");
