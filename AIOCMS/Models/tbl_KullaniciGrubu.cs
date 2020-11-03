@@ -17,8 +17,8 @@ namespace AIOCMS.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public tbl_KullaniciGrubu()
         {
-            this.tbl_Kullanici = new HashSet<tbl_Kullanici>();
             this.tbl_Izinler = new HashSet<tbl_Izinler>();
+            this.tbl_Kullanici = new HashSet<tbl_Kullanici>();
         }
     
         public int Id { get; set; }
@@ -29,8 +29,8 @@ namespace AIOCMS.Models
         public bool AktifDurumu { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tbl_Kullanici> tbl_Kullanici { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tbl_Izinler> tbl_Izinler { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tbl_Kullanici> tbl_Kullanici { get; set; }
     }
 }

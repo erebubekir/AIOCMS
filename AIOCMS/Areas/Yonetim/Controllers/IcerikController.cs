@@ -13,7 +13,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 {
     public class IcerikController : Controller
     {
-        private CMSDBEntities db = new CMSDBEntities();
+        private CMSDBEntities2 db = new CMSDBEntities2();
 
         [Yetki(enmYetkiler.Listeleme)]
         public ActionResult Index()

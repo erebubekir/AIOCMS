@@ -165,6 +165,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AIOCMSDB.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>AIOCMSDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>AIOCMSDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tbl_Ayarlar.cs">
       <DependentUpon>AIOCMSDB.tt</DependentUpon>
     </Compile>
@@ -200,8 +206,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Models\AIOCMSDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AIOCMSDB.Context.cs</LastGenOutput>
       <DependentUpon>AIOCMSDB.edmx</DependentUpon>
+      <LastGenOutput>AIOCMSDB.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\AIOCMSDB.edmx.sql" />
     <Content Include="Models\AIOCMSDB.tt">
@@ -211,13 +217,6 @@
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\AIOCMSDB.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AIOCMSDB.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\AIOCMSDB.edmx.diagram">
-      <DependentUpon>AIOCMSDB.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Yonetim\Views\web.config" />
     <Content Include="Areas\Yonetim\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Yonetim\Views\Shared\_Layout.cshtml" />
@@ -249,6 +248,13 @@
     <Content Include="Areas\Yonetim\Views\Yorum\Details.cshtml" />
     <Content Include="Areas\Yonetim\Views\Yorum\Edit.cshtml" />
     <Content Include="Areas\Yonetim\Views\Yorum\Index.cshtml" />
+    <EntityDeploy Include="Models\AIOCMSDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AIOCMSDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\AIOCMSDB.edmx.diagram">
+      <DependentUpon>AIOCMSDB.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -260,13 +266,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -274,6 +273,13 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <None Include="Web.config.example" />
+    <None Include="Web.config.Debug.example">
+      <DependentUpon>Web.config.example</DependentUpon>
+    </None>
+    <None Include="Web.config.Release.example">
+      <DependentUpon>Web.config.example</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

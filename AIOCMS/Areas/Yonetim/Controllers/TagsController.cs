@@ -8,12 +8,13 @@ using System.Web;
 using System.Web.Mvc;
 using AIOCMS.Areas.Yonetim.Data;
 using AIOCMS.Models;
+using Newtonsoft.Json;
 
 namespace AIOCMS.Areas.Yonetim.Controllers
 {
     public class TagsController : Controller
     {
-        private CMSDBEntities db = new CMSDBEntities();
+        private CMSDBEntities2 db = new CMSDBEntities2();
 
         // GET: Yonetim/Tags
         [Yetki(enmYetkiler.Listeleme)]
@@ -56,18 +57,35 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Ekleme)]
-        public ActionResult Create(tbl_Tags tbl_Tags)
+        public string Create(tbl_Tags tbl_Tags)
         {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+
             if (ModelState.IsValid)
             {
+                var toplamUrl = db.tbl_Tags.Where(d => d.Url == tbl_Tags.Url).Count();
+                if (toplamUrl < 1)
+                {
+                    tbl_Tags.OlusturmaTarihi = DateTime.Now;
+                    db.tbl_Tags.Add(tbl_Tags);
+                    db.SaveChanges();
+                    result["status"] = "success";
+                    result["message"] = "Kayıt Başarıyla Eklendi";
+                }
+                else
+                {
+                    result["status"] = "error";
+                    result["message"] = "Bu Url Başka Bir Yerde Kullanılmış";
+                }
 
-                tbl_Tags.OlusturmaTarihi = DateTime.Now;
-                db.tbl_Tags.Add(tbl_Tags);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+            }
+            else
+            {
+                result["status"] = "error";
+                result["message"] = "Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz";
             }
 
-            return View(tbl_Tags);
+            return JsonConvert.SerializeObject(result);
         }
 
         // GET: Yonetim/Tags/Edit/5
@@ -92,16 +110,32 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
-        public ActionResult Edit(tbl_Tags tbl_Tags)
+        public string Edit(tbl_Tags tbl_Tags)
         {
+            Dictionary<string, string> result = new Dictionary<string, string>();
             if (ModelState.IsValid)
             {
-                tbl_Tags.GuncellemeTarihi = DateTime.Now;
-                db.Entry(tbl_Tags).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var toplamUrl = db.tbl_Tags.Where(d => d.Url == tbl_Tags.Url).Where(d => d.Id != tbl_Tags.Id).Count();
+                if (toplamUrl < 1)
+                {
+                    tbl_Tags.GuncellemeTarihi = DateTime.Now;
+                    db.Entry(tbl_Tags).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else
+                {
+                    result["status"] = "error";
+                    result["message"] = "Bu Url Başka Bir Yerde Kullanılmış";
+                }
+
             }
-            return View(tbl_Tags);
+            else
+            {
+                result["status"] = "error";
+                result["message"] = "Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz";
+            }
+
+            return JsonConvert.SerializeObject(result);
         }
 
         // GET: Yonetim/Tags/Delete/5

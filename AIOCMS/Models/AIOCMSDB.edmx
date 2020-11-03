@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CMSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CMSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tbl_Ayarlar">
           <Key>
             <PropertyRef Name="Id" />
@@ -145,7 +145,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tbl_Izinler_tbl_KullaniciGrubu">
-          <End Role="tbl_KullaniciGrubu" Type="Self.tbl_KullaniciGrubu" Multiplicity="1" />
+          <End Role="tbl_KullaniciGrubu" Type="Self.tbl_KullaniciGrubu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="tbl_Izinler" Type="Self.tbl_Izinler" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_KullaniciGrubu">
@@ -216,6 +218,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="CMSDBModelStoreContainer">
           <EntitySet Name="tbl_Ayarlar" EntityType="Self.tbl_Ayarlar" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tbl_Icerik" EntityType="Self.tbl_Icerik" Schema="dbo" store:Type="Tables" />
@@ -258,62 +291,26 @@
             <End Role="tbl_Yorum1" EntitySet="tbl_Yorum" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CMSDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="CMSDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="tbl_Ayarlar" EntityType="CMSDBModel.tbl_Ayarlar" />
-          <EntitySet Name="tbl_Icerik" EntityType="CMSDBModel.tbl_Icerik" />
-          <EntitySet Name="tbl_Kullanici" EntityType="CMSDBModel.tbl_Kullanici" />
-          <EntitySet Name="tbl_KullaniciGrubu" EntityType="CMSDBModel.tbl_KullaniciGrubu" />
-          <EntitySet Name="tbl_Tags" EntityType="CMSDBModel.tbl_Tags" />
-          <EntitySet Name="tbl_Yorum" EntityType="CMSDBModel.tbl_Yorum" />
-          <AssociationSet Name="FK_tbl_Icerik_tbl_Icerik" Association="CMSDBModel.FK_tbl_Icerik_tbl_Icerik">
-            <End Role="tbl_Icerik" EntitySet="tbl_Icerik" />
-            <End Role="tbl_Icerik1" EntitySet="tbl_Icerik" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_Icerik_tbl_Kullanici" Association="CMSDBModel.FK_tbl_Icerik_tbl_Kullanici">
-            <End Role="tbl_Kullanici" EntitySet="tbl_Kullanici" />
-            <End Role="tbl_Icerik" EntitySet="tbl_Icerik" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_Yorum_tbl_Icerik" Association="CMSDBModel.FK_tbl_Yorum_tbl_Icerik">
-            <End Role="tbl_Icerik" EntitySet="tbl_Icerik" />
-            <End Role="tbl_Yorum" EntitySet="tbl_Yorum" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_Kullanici_tbl_KullaniciGrubu" Association="CMSDBModel.FK_tbl_Kullanici_tbl_KullaniciGrubu">
-            <End Role="tbl_KullaniciGrubu" EntitySet="tbl_KullaniciGrubu" />
-            <End Role="tbl_Kullanici" EntitySet="tbl_Kullanici" />
-          </AssociationSet>
-          <AssociationSet Name="FK_tbl_Yorum_tbl_Yorum" Association="CMSDBModel.FK_tbl_Yorum_tbl_Yorum">
-            <End Role="tbl_Yorum" EntitySet="tbl_Yorum" />
-            <End Role="tbl_Yorum1" EntitySet="tbl_Yorum" />
-          </AssociationSet>
-          <AssociationSet Name="tbl_TagIcerik" Association="CMSDBModel.tbl_TagIcerik">
-            <End Role="tbl_Icerik" EntitySet="tbl_Icerik" />
-            <End Role="tbl_Tags" EntitySet="tbl_Tags" />
-          </AssociationSet>
-          <EntitySet Name="tbl_Izinler" EntityType="CMSDBModel.tbl_Izinler" />
-          <AssociationSet Name="FK_tbl_Izinler_tbl_KullaniciGrubu" Association="CMSDBModel.FK_tbl_Izinler_tbl_KullaniciGrubu">
-            <End Role="tbl_KullaniciGrubu" EntitySet="tbl_KullaniciGrubu" />
-            <End Role="tbl_Izinler" EntitySet="tbl_Izinler" />
-          </AssociationSet>
-        </EntityContainer>
         <EntityType Name="tbl_Ayarlar">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LogoUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Baslik" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AltBaslik" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AnahtarKelime" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Aciklama" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Adres" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="TelNo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="GSMNo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FaxNo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ScriptKodlari" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LogoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Baslik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AltBaslik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AnahtarKelime" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Aciklama" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Adres" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TelNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GSMNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FaxNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ScriptKodlari" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="OlusturmaTarihi" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GuncellenmeTarihi" Type="DateTime" Precision="3" />
         </EntityType>
@@ -322,10 +319,10 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Baslik" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Icerik" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Resim" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Baslik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Icerik" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Resim" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UstId" Type="Int32" />
           <Property Name="OlusturmaTarihi" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GuncellemeTarihi" Type="DateTime" Precision="3" />
@@ -336,63 +333,77 @@
           <Property Name="IcerikTipi" Type="Int32" Nullable="false" />
           <Property Name="OkunmaSuresi" Type="Int32" Nullable="false" />
           <Property Name="OkunmaSayisi" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tbl_Icerik1" Relationship="CMSDBModel.FK_tbl_Icerik_tbl_Icerik" FromRole="tbl_Icerik" ToRole="tbl_Icerik1" />
-          <NavigationProperty Name="tbl_Icerik2" Relationship="CMSDBModel.FK_tbl_Icerik_tbl_Icerik" FromRole="tbl_Icerik1" ToRole="tbl_Icerik" />
-          <NavigationProperty Name="tbl_Kullanici" Relationship="CMSDBModel.FK_tbl_Icerik_tbl_Kullanici" FromRole="tbl_Icerik" ToRole="tbl_Kullanici" />
-          <NavigationProperty Name="tbl_Yorum" Relationship="CMSDBModel.FK_tbl_Yorum_tbl_Icerik" FromRole="tbl_Icerik" ToRole="tbl_Yorum" />
-          <NavigationProperty Name="tbl_Tags" Relationship="CMSDBModel.tbl_TagIcerik" FromRole="tbl_Icerik" ToRole="tbl_Tags" />
+          <NavigationProperty Name="tbl_Icerik1" Relationship="Self.FK_tbl_Icerik_tbl_Icerik" FromRole="tbl_Icerik" ToRole="tbl_Icerik1" />
+          <NavigationProperty Name="tbl_Icerik2" Relationship="Self.FK_tbl_Icerik_tbl_Icerik" FromRole="tbl_Icerik1" ToRole="tbl_Icerik" />
+          <NavigationProperty Name="tbl_Kullanici" Relationship="Self.FK_tbl_Icerik_tbl_Kullanici" FromRole="tbl_Icerik" ToRole="tbl_Kullanici" />
+          <NavigationProperty Name="tbl_Yorum" Relationship="Self.FK_tbl_Yorum_tbl_Icerik" FromRole="tbl_Icerik" ToRole="tbl_Yorum" />
+          <NavigationProperty Name="tbl_Tags" Relationship="Self.tbl_TagIcerik" FromRole="tbl_Icerik" ToRole="tbl_Tags" />
+        </EntityType>
+        <EntityType Name="tbl_Izinler">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KontrollerAdi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Yetkiler" Type="Int32" Nullable="false" />
+          <Property Name="KullaniciGrubuId" Type="Int32" Nullable="false" />
+          <Property Name="OlusturmaTarihi" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="GuncellenmeTarihi" Type="DateTime" Precision="3" />
+          <Property Name="SilinmeTarihi" Type="DateTime" Precision="3" />
+          <Property Name="AktifDurumu" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tbl_KullaniciGrubu" Relationship="Self.FK_tbl_Izinler_tbl_KullaniciGrubu" FromRole="tbl_Izinler" ToRole="tbl_KullaniciGrubu" />
         </EntityType>
         <EntityType Name="tbl_Kullanici">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="KullaniciAdi" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Sifre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AdiSoyadi" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EPosta" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="KullaniciAdi" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sifre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdiSoyadi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EPosta" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="OlusturmaTarihi" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GuncellemeTarihi" Type="DateTime" Precision="3" />
           <Property Name="SilinmeTarihi" Type="DateTime" Precision="3" />
           <Property Name="AktifDurumu" Type="Boolean" Nullable="false" />
           <Property Name="Resim" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="KullaniciGrupId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tbl_Icerik" Relationship="CMSDBModel.FK_tbl_Icerik_tbl_Kullanici" FromRole="tbl_Kullanici" ToRole="tbl_Icerik" />
-          <NavigationProperty Name="tbl_KullaniciGrubu" Relationship="CMSDBModel.FK_tbl_Kullanici_tbl_KullaniciGrubu" FromRole="tbl_Kullanici" ToRole="tbl_KullaniciGrubu" />
+          <NavigationProperty Name="tbl_Icerik" Relationship="Self.FK_tbl_Icerik_tbl_Kullanici" FromRole="tbl_Kullanici" ToRole="tbl_Icerik" />
+          <NavigationProperty Name="tbl_KullaniciGrubu" Relationship="Self.FK_tbl_Kullanici_tbl_KullaniciGrubu" FromRole="tbl_Kullanici" ToRole="tbl_KullaniciGrubu" />
         </EntityType>
         <EntityType Name="tbl_KullaniciGrubu">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Adi" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Adi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="OlusturmaTarihi" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GuncellemeTarihi" Type="DateTime" Precision="3" />
           <Property Name="SilinmeTarihi" Type="DateTime" Precision="3" />
           <Property Name="AktifDurumu" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="tbl_Kullanici" Relationship="CMSDBModel.FK_tbl_Kullanici_tbl_KullaniciGrubu" FromRole="tbl_KullaniciGrubu" ToRole="tbl_Kullanici" />
-          <NavigationProperty Name="tbl_Izinler" Relationship="CMSDBModel.FK_tbl_Izinler_tbl_KullaniciGrubu" FromRole="tbl_KullaniciGrubu" ToRole="tbl_Izinler" />
+          <NavigationProperty Name="tbl_Izinler" Relationship="Self.FK_tbl_Izinler_tbl_KullaniciGrubu" FromRole="tbl_KullaniciGrubu" ToRole="tbl_Izinler" />
+          <NavigationProperty Name="tbl_Kullanici" Relationship="Self.FK_tbl_Kullanici_tbl_KullaniciGrubu" FromRole="tbl_KullaniciGrubu" ToRole="tbl_Kullanici" />
         </EntityType>
         <EntityType Name="tbl_Tags">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Adi" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Adi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="OlusturmaTarihi" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GuncellemeTarihi" Type="DateTime" Precision="3" />
           <Property Name="SilinmeTarihi" Type="DateTime" Precision="3" />
           <Property Name="AktifDurumu" Type="Boolean" Nullable="false" />
-          <Property Name="Url" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="tbl_Icerik" Relationship="CMSDBModel.tbl_TagIcerik" FromRole="tbl_Tags" ToRole="tbl_Icerik" />
+          <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tbl_Icerik" Relationship="Self.tbl_TagIcerik" FromRole="tbl_Tags" ToRole="tbl_Icerik" />
         </EntityType>
         <EntityType Name="tbl_Yorum">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AdiSoyadi" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Yorum" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AdiSoyadi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Yorum" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Puan" Type="Int32" Nullable="false" />
           <Property Name="UstId" Type="Int32" />
           <Property Name="IcerikId" Type="Int32" Nullable="false" />
@@ -402,13 +413,13 @@
           <Property Name="AktifDurumu" Type="Boolean" Nullable="false" />
           <Property Name="BegeniSayisi" Type="Int32" Nullable="false" />
           <Property Name="BegenmemeSayisi" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="tbl_Icerik" Relationship="CMSDBModel.FK_tbl_Yorum_tbl_Icerik" FromRole="tbl_Yorum" ToRole="tbl_Icerik" />
-          <NavigationProperty Name="tbl_Yorum1" Relationship="CMSDBModel.FK_tbl_Yorum_tbl_Yorum" FromRole="tbl_Yorum" ToRole="tbl_Yorum1" />
-          <NavigationProperty Name="tbl_Yorum2" Relationship="CMSDBModel.FK_tbl_Yorum_tbl_Yorum" FromRole="tbl_Yorum1" ToRole="tbl_Yorum" />
+          <NavigationProperty Name="tbl_Icerik" Relationship="Self.FK_tbl_Yorum_tbl_Icerik" FromRole="tbl_Yorum" ToRole="tbl_Icerik" />
+          <NavigationProperty Name="tbl_Yorum1" Relationship="Self.FK_tbl_Yorum_tbl_Yorum" FromRole="tbl_Yorum" ToRole="tbl_Yorum1" />
+          <NavigationProperty Name="tbl_Yorum2" Relationship="Self.FK_tbl_Yorum_tbl_Yorum" FromRole="tbl_Yorum1" ToRole="tbl_Yorum" />
         </EntityType>
         <Association Name="FK_tbl_Icerik_tbl_Icerik">
-          <End Type="CMSDBModel.tbl_Icerik" Role="tbl_Icerik" Multiplicity="0..1" />
-          <End Type="CMSDBModel.tbl_Icerik" Role="tbl_Icerik1" Multiplicity="*" />
+          <End Role="tbl_Icerik" Type="Self.tbl_Icerik" Multiplicity="0..1" />
+          <End Role="tbl_Icerik1" Type="Self.tbl_Icerik" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_Icerik">
               <PropertyRef Name="Id" />
@@ -419,8 +430,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tbl_Icerik_tbl_Kullanici">
-          <End Type="CMSDBModel.tbl_Kullanici" Role="tbl_Kullanici" Multiplicity="1" />
-          <End Type="CMSDBModel.tbl_Icerik" Role="tbl_Icerik" Multiplicity="*" />
+          <End Role="tbl_Kullanici" Type="Self.tbl_Kullanici" Multiplicity="1" />
+          <End Role="tbl_Icerik" Type="Self.tbl_Icerik" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_Kullanici">
               <PropertyRef Name="Id" />
@@ -431,8 +442,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tbl_Yorum_tbl_Icerik">
-          <End Type="CMSDBModel.tbl_Icerik" Role="tbl_Icerik" Multiplicity="1" />
-          <End Type="CMSDBModel.tbl_Yorum" Role="tbl_Yorum" Multiplicity="*" />
+          <End Role="tbl_Icerik" Type="Self.tbl_Icerik" Multiplicity="1" />
+          <End Role="tbl_Yorum" Type="Self.tbl_Yorum" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_Icerik">
               <PropertyRef Name="Id" />
@@ -442,9 +453,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tbl_Izinler_tbl_KullaniciGrubu">
+          <End Role="tbl_KullaniciGrubu" Type="Self.tbl_KullaniciGrubu" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tbl_Izinler" Type="Self.tbl_Izinler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_KullaniciGrubu">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_Izinler">
+              <PropertyRef Name="KullaniciGrubuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tbl_Kullanici_tbl_KullaniciGrubu">
-          <End Type="CMSDBModel.tbl_KullaniciGrubu" Role="tbl_KullaniciGrubu" Multiplicity="1" />
-          <End Type="CMSDBModel.tbl_Kullanici" Role="tbl_Kullanici" Multiplicity="*" />
+          <End Role="tbl_KullaniciGrubu" Type="Self.tbl_KullaniciGrubu" Multiplicity="1" />
+          <End Role="tbl_Kullanici" Type="Self.tbl_Kullanici" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_KullaniciGrubu">
               <PropertyRef Name="Id" />
@@ -455,8 +480,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_tbl_Yorum_tbl_Yorum">
-          <End Type="CMSDBModel.tbl_Yorum" Role="tbl_Yorum" Multiplicity="0..1" />
-          <End Type="CMSDBModel.tbl_Yorum" Role="tbl_Yorum1" Multiplicity="*" />
+          <End Role="tbl_Yorum" Type="Self.tbl_Yorum" Multiplicity="0..1" />
+          <End Role="tbl_Yorum1" Type="Self.tbl_Yorum" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="tbl_Yorum">
               <PropertyRef Name="Id" />
@@ -467,165 +492,242 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="tbl_TagIcerik">
-          <End Type="CMSDBModel.tbl_Icerik" Role="tbl_Icerik" Multiplicity="*" />
-          <End Type="CMSDBModel.tbl_Tags" Role="tbl_Tags" Multiplicity="*" />
+          <End Role="tbl_Icerik" Type="Self.tbl_Icerik" Multiplicity="*" />
+          <End Role="tbl_Tags" Type="Self.tbl_Tags" Multiplicity="*" />
         </Association>
-        <EntityType Name="tbl_Izinler">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="KontrollerAdi" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Yetkiler" Type="Int32" Nullable="false" />
-          <Property Name="KullaniciGrubuId" Type="Int32" Nullable="false" />
-          <Property Name="OlusturmaTarihi" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="GuncellenmeTarihi" Type="DateTime" Precision="3" />
-          <Property Name="SilinmeTarihi" Type="DateTime" Precision="3" />
-          <Property Name="AktifDurumu" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="tbl_KullaniciGrubu" Relationship="CMSDBModel.FK_tbl_Izinler_tbl_KullaniciGrubu" FromRole="tbl_Izinler" ToRole="tbl_KullaniciGrubu" />
-        </EntityType>
-        <Association Name="FK_tbl_Izinler_tbl_KullaniciGrubu">
-          <End Type="CMSDBModel.tbl_KullaniciGrubu" Role="tbl_KullaniciGrubu" Multiplicity="1" />
-          <End Type="CMSDBModel.tbl_Izinler" Role="tbl_Izinler" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tbl_KullaniciGrubu">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="tbl_Izinler">
-              <PropertyRef Name="KullaniciGrubuId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        </Schema>
+        <EntityContainer Name="CMSDBEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_Ayarlar" EntityType="Self.tbl_Ayarlar" />
+          <EntitySet Name="tbl_Icerik" EntityType="Self.tbl_Icerik" />
+          <EntitySet Name="tbl_Izinler" EntityType="Self.tbl_Izinler" />
+          <EntitySet Name="tbl_Kullanici" EntityType="Self.tbl_Kullanici" />
+          <EntitySet Name="tbl_KullaniciGrubu" EntityType="Self.tbl_KullaniciGrubu" />
+          <EntitySet Name="tbl_Tags" EntityType="Self.tbl_Tags" />
+          <EntitySet Name="tbl_Yorum" EntityType="Self.tbl_Yorum" />
+          <AssociationSet Name="FK_tbl_Icerik_tbl_Icerik" Association="Self.FK_tbl_Icerik_tbl_Icerik">
+            <End Role="tbl_Icerik" EntitySet="tbl_Icerik" />
+            <End Role="tbl_Icerik1" EntitySet="tbl_Icerik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Icerik_tbl_Kullanici" Association="Self.FK_tbl_Icerik_tbl_Kullanici">
+            <End Role="tbl_Kullanici" EntitySet="tbl_Kullanici" />
+            <End Role="tbl_Icerik" EntitySet="tbl_Icerik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Yorum_tbl_Icerik" Association="Self.FK_tbl_Yorum_tbl_Icerik">
+            <End Role="tbl_Icerik" EntitySet="tbl_Icerik" />
+            <End Role="tbl_Yorum" EntitySet="tbl_Yorum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Izinler_tbl_KullaniciGrubu" Association="Self.FK_tbl_Izinler_tbl_KullaniciGrubu">
+            <End Role="tbl_KullaniciGrubu" EntitySet="tbl_KullaniciGrubu" />
+            <End Role="tbl_Izinler" EntitySet="tbl_Izinler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Kullanici_tbl_KullaniciGrubu" Association="Self.FK_tbl_Kullanici_tbl_KullaniciGrubu">
+            <End Role="tbl_KullaniciGrubu" EntitySet="tbl_KullaniciGrubu" />
+            <End Role="tbl_Kullanici" EntitySet="tbl_Kullanici" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Yorum_tbl_Yorum" Association="Self.FK_tbl_Yorum_tbl_Yorum">
+            <End Role="tbl_Yorum" EntitySet="tbl_Yorum" />
+            <End Role="tbl_Yorum1" EntitySet="tbl_Yorum" />
+          </AssociationSet>
+          <AssociationSet Name="tbl_TagIcerik" Association="Self.tbl_TagIcerik">
+            <End Role="tbl_Icerik" EntitySet="tbl_Icerik" />
+            <End Role="tbl_Tags" EntitySet="tbl_Tags" />
+          </AssociationSet>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(CMSDBModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(CMSDBModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="CMSDBModelStoreContainer" CdmEntityContainer="CMSDBEntities">
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CMSDBModelStoreContainer" CdmEntityContainer="CMSDBEntities2">
           <EntitySetMapping Name="tbl_Ayarlar">
             <EntityTypeMapping TypeName="CMSDBModel.tbl_Ayarlar">
               <MappingFragment StoreEntitySet="tbl_Ayarlar">
-                <ScalarProperty Name="GuncellenmeTarihi" ColumnName="GuncellenmeTarihi" />
-                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
-                <ScalarProperty Name="ScriptKodlari" ColumnName="ScriptKodlari" />
-                <ScalarProperty Name="FaxNo" ColumnName="FaxNo" />
-                <ScalarProperty Name="GSMNo" ColumnName="GSMNo" />
-                <ScalarProperty Name="TelNo" ColumnName="TelNo" />
-                <ScalarProperty Name="Adres" ColumnName="Adres" />
-                <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
-                <ScalarProperty Name="AnahtarKelime" ColumnName="AnahtarKelime" />
-                <ScalarProperty Name="AltBaslik" ColumnName="AltBaslik" />
-                <ScalarProperty Name="Baslik" ColumnName="Baslik" />
-                <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LogoUrl" ColumnName="LogoUrl" />
+                <ScalarProperty Name="Baslik" ColumnName="Baslik" />
+                <ScalarProperty Name="AltBaslik" ColumnName="AltBaslik" />
+                <ScalarProperty Name="AnahtarKelime" ColumnName="AnahtarKelime" />
+                <ScalarProperty Name="Aciklama" ColumnName="Aciklama" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+                <ScalarProperty Name="TelNo" ColumnName="TelNo" />
+                <ScalarProperty Name="GSMNo" ColumnName="GSMNo" />
+                <ScalarProperty Name="FaxNo" ColumnName="FaxNo" />
+                <ScalarProperty Name="ScriptKodlari" ColumnName="ScriptKodlari" />
+                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
+                <ScalarProperty Name="GuncellenmeTarihi" ColumnName="GuncellenmeTarihi" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_Icerik">
             <EntityTypeMapping TypeName="CMSDBModel.tbl_Icerik">
               <MappingFragment StoreEntitySet="tbl_Icerik">
-                <ScalarProperty Name="OkunmaSayisi" ColumnName="OkunmaSayisi" />
-                <ScalarProperty Name="OkunmaSuresi" ColumnName="OkunmaSuresi" />
-                <ScalarProperty Name="IcerikTipi" ColumnName="IcerikTipi" />
-                <ScalarProperty Name="OnayDurumu" ColumnName="OnayDurumu" />
-                <ScalarProperty Name="KullaniciId" ColumnName="KullaniciId" />
-                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
-                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
-                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
-                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
-                <ScalarProperty Name="UstId" ColumnName="UstId" />
-                <ScalarProperty Name="Resim" ColumnName="Resim" />
-                <ScalarProperty Name="Url" ColumnName="Url" />
-                <ScalarProperty Name="Icerik" ColumnName="Icerik" />
-                <ScalarProperty Name="Baslik" ColumnName="Baslik" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Baslik" ColumnName="Baslik" />
+                <ScalarProperty Name="Icerik" ColumnName="Icerik" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="Resim" ColumnName="Resim" />
+                <ScalarProperty Name="UstId" ColumnName="UstId" />
+                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
+                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
+                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
+                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
+                <ScalarProperty Name="KullaniciId" ColumnName="KullaniciId" />
+                <ScalarProperty Name="OnayDurumu" ColumnName="OnayDurumu" />
+                <ScalarProperty Name="IcerikTipi" ColumnName="IcerikTipi" />
+                <ScalarProperty Name="OkunmaSuresi" ColumnName="OkunmaSuresi" />
+                <ScalarProperty Name="OkunmaSayisi" ColumnName="OkunmaSayisi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Izinler">
+            <EntityTypeMapping TypeName="CMSDBModel.tbl_Izinler">
+              <MappingFragment StoreEntitySet="tbl_Izinler">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="KontrollerAdi" ColumnName="KontrollerAdi" />
+                <ScalarProperty Name="Yetkiler" ColumnName="Yetkiler" />
+                <ScalarProperty Name="KullaniciGrubuId" ColumnName="KullaniciGrubuId" />
+                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
+                <ScalarProperty Name="GuncellenmeTarihi" ColumnName="GuncellenmeTarihi" />
+                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
+                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_Kullanici">
             <EntityTypeMapping TypeName="CMSDBModel.tbl_Kullanici">
               <MappingFragment StoreEntitySet="tbl_Kullanici">
-                <ScalarProperty Name="KullaniciGrupId" ColumnName="KullaniciGrupId" />
-                <ScalarProperty Name="Resim" ColumnName="Resim" />
-                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
-                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
-                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
-                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
-                <ScalarProperty Name="EPosta" ColumnName="EPosta" />
-                <ScalarProperty Name="AdiSoyadi" ColumnName="AdiSoyadi" />
-                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
-                <ScalarProperty Name="KullaniciAdi" ColumnName="KullaniciAdi" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="KullaniciAdi" ColumnName="KullaniciAdi" />
+                <ScalarProperty Name="Sifre" ColumnName="Sifre" />
+                <ScalarProperty Name="AdiSoyadi" ColumnName="AdiSoyadi" />
+                <ScalarProperty Name="EPosta" ColumnName="EPosta" />
+                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
+                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
+                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
+                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
+                <ScalarProperty Name="Resim" ColumnName="Resim" />
+                <ScalarProperty Name="KullaniciGrupId" ColumnName="KullaniciGrupId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_KullaniciGrubu">
             <EntityTypeMapping TypeName="CMSDBModel.tbl_KullaniciGrubu">
               <MappingFragment StoreEntitySet="tbl_KullaniciGrubu">
-                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
-                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
-                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
-                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
-                <ScalarProperty Name="Adi" ColumnName="Adi" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Adi" ColumnName="Adi" />
+                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
+                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
+                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
+                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_Tags">
             <EntityTypeMapping TypeName="CMSDBModel.tbl_Tags">
               <MappingFragment StoreEntitySet="tbl_Tags">
-                <ScalarProperty Name="Url" ColumnName="Url" />
-                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
-                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
-                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
-                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
-                <ScalarProperty Name="Adi" ColumnName="Adi" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Adi" ColumnName="Adi" />
+                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
+                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
+                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
+                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="tbl_Yorum">
             <EntityTypeMapping TypeName="CMSDBModel.tbl_Yorum">
               <MappingFragment StoreEntitySet="tbl_Yorum">
-                <ScalarProperty Name="BegenmemeSayisi" ColumnName="BegenmemeSayisi" />
-                <ScalarProperty Name="BegeniSayisi" ColumnName="BegeniSayisi" />
-                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
-                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
-                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
-                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
-                <ScalarProperty Name="IcerikId" ColumnName="IcerikId" />
-                <ScalarProperty Name="UstId" ColumnName="UstId" />
-                <ScalarProperty Name="Puan" ColumnName="Puan" />
-                <ScalarProperty Name="Yorum" ColumnName="Yorum" />
-                <ScalarProperty Name="AdiSoyadi" ColumnName="AdiSoyadi" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AdiSoyadi" ColumnName="AdiSoyadi" />
+                <ScalarProperty Name="Yorum" ColumnName="Yorum" />
+                <ScalarProperty Name="Puan" ColumnName="Puan" />
+                <ScalarProperty Name="UstId" ColumnName="UstId" />
+                <ScalarProperty Name="IcerikId" ColumnName="IcerikId" />
+                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
+                <ScalarProperty Name="GuncellemeTarihi" ColumnName="GuncellemeTarihi" />
+                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
+                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
+                <ScalarProperty Name="BegeniSayisi" ColumnName="BegeniSayisi" />
+                <ScalarProperty Name="BegenmemeSayisi" ColumnName="BegenmemeSayisi" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="tbl_TagIcerik" TypeName="CMSDBModel.tbl_TagIcerik" StoreEntitySet="tbl_TagIcerik">
-            <EndProperty Name="tbl_Tags">
-              <ScalarProperty Name="Id" ColumnName="TagId" />
-            </EndProperty>
             <EndProperty Name="tbl_Icerik">
               <ScalarProperty Name="Id" ColumnName="IcerikId" />
             </EndProperty>
+            <EndProperty Name="tbl_Tags">
+              <ScalarProperty Name="Id" ColumnName="TagId" />
+            </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="tbl_Izinler">
-            <EntityTypeMapping TypeName="CMSDBModel.tbl_Izinler">
-              <MappingFragment StoreEntitySet="tbl_Izinler">
-                <ScalarProperty Name="AktifDurumu" ColumnName="AktifDurumu" />
-                <ScalarProperty Name="SilinmeTarihi" ColumnName="SilinmeTarihi" />
-                <ScalarProperty Name="GuncellenmeTarihi" ColumnName="GuncellenmeTarihi" />
-                <ScalarProperty Name="OlusturmaTarihi" ColumnName="OlusturmaTarihi" />
-                <ScalarProperty Name="KullaniciGrubuId" ColumnName="KullaniciGrubuId" />
-                <ScalarProperty Name="Yetkiler" ColumnName="Yetkiler" />
-                <ScalarProperty Name="KontrollerAdi" ColumnName="KontrollerAdi" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="CMSDBModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="CMSDBModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="CMSDBModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="CMSDBModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CMSDBModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="CMSDBModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CMSDBModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="CMSDBModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="CMSDBModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
-</Mapping></edmx:Mappings>
+      </Mapping>
+    </edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -639,7 +741,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
