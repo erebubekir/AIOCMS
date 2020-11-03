@@ -6,10 +6,16 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using AIOCMS.Areas.Yonetim.Data;
 using AIOCMS.Models;
 
 namespace AIOCMS.Areas.Yonetim.Controllers
 {
+    
+    /// <summary>
+    /// Yorum işlmeleri
+    /// </summary>
+    [Yetki(enmYetkiler.ButunYetkiler)]
     public class YorumController : Controller
     {
         private CMSDBEntities2 db = new CMSDBEntities2();
@@ -123,7 +129,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
-        // POST: Yonetim/Yorum/Delete/5
+        // POST: Yonetim/Yorum/Aktiflik/5
         [HttpPost, ActionName("Aktiflik")]
         // [ValidateAntiForgeryToken]
         public ActionResult Aktiflik(int id)
@@ -134,8 +140,6 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             else 
                 tbl_Yorum.AktifDurumu = true;
 
-
-            //db.Entry(tbl_Yorum).State = EntityState.Modified;
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

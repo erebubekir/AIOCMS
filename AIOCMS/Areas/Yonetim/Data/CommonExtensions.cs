@@ -11,14 +11,18 @@ namespace AIOCMS.Areas.Yonetim.Data
             //1*2^6+0*2^5+...1*2^0
             for (int i = 0; i < yetkiSValue.Length; i++)
             {
-                yetkiVal += (int)Math.Pow(2, i) * (int)yetkiSValue[(yetkiSValue.Length - 1) - i];
+                yetkiVal += (int)Math.Pow(2, i) * (int)(yetkiSValue[(yetkiSValue.Length - 1) - i]-'0');
             }
             return yetkiVal;
         }
         public static string ToIntStringBit(this int intValue)
         {
             string yetki = "";
-           
+            //1010101
+            //0110100
+            //1*2^6+0*2^5+...1*2^0
+            // int sonHane = intValue % 2 == 1 ? 1 : 0;
+            //   intValue = intValue - sonHane;
             while (intValue > 0)
             {
                 if (intValue % 2 == 0)
