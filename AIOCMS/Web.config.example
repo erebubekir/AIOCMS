@@ -58,7 +58,7 @@
   </system.codedom>
   <connectionStrings>
    
-    <add name="CMSDBEntities2" connectionString="metadata=res://*/Models.AIOCMSDB.csdl|res://*/Models.AIOCMSDB.ssdl|res://*/Models.AIOCMSDB.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=localhost;initial catalog=CMSDB;user id=UserName;password=password;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    <add name="CMSDBEntities" connectionString="metadata=res://*/Models.AIOCMSDB.csdl|res://*/Models.AIOCMSDB.ssdl|res://*/Models.AIOCMSDB.msl;provider=System.Data.SqlClient;provider connection string=&quot;data source=localhost;initial catalog=CMSDB;user id=UserName;password=password;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
   </connectionStrings>
   <entityFramework>
     <defaultConnectionFactory type="System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework">

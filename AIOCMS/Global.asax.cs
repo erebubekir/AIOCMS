@@ -41,14 +41,14 @@ namespace AIOCMS
               "//member[starts-with(@name, '" + path + "')]");
                 KontrollerTipi kont = new KontrollerTipi
                     ();
-                kont.KontrollerAdi = item;
+                kont.KontrollerAdi = item.ToUpper();
                 if (xmlDocuOfMethod != null)
                     kont.Summary= xmlDocuOfMethod.ChildNodes[0].InnerText;
                 kontTipleri.Add(kont);
             }
             IzinVM.KontrollerAdlari = kontTipleri;
 
-            CMSDBEntities2 db = new CMSDBEntities2();
+            CMSDBEntities db = new CMSDBEntities();
             var grups = db.tbl_KullaniciGrubu.ToList();
            
             foreach (var item in grups)

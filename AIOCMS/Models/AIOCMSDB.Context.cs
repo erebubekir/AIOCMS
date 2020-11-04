@@ -15,10 +15,10 @@ namespace AIOCMS.Models
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class CMSDBEntities2 : DbContext
+    public partial class CMSDBEntities : DbContext
     {
-        public CMSDBEntities2()
-            : base("name=CMSDBEntities2")
+        public CMSDBEntities()
+            : base("name=CMSDBEntities")
         {
         }
     

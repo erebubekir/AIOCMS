@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Yeni Tag", "Create")
 </p>
 <table class="table">
     <tr>
@@ -29,35 +29,50 @@
         <th>
             @Html.DisplayNameFor(model => model.Url)
         </th>
-        <th></th>
+        <th>Seçenekler</th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Adi)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OlusturmaTarihi)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GuncellemeTarihi)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SilinmeTarihi)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AktifDurumu)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Url)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Adi
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OlusturmaTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GuncellemeTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SilinmeTarihi)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AktifDurumu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Url)
+            </td>
+            <td>
+                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+                {
+                    <a href="Yonetim/Yorum/Edit/@item.Id">Düzenle</a>
+                }
+                |
+                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Detay, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+                {
+                    @Html.ActionLink("Detay", "Details", new { id = item.Id })
+                }
+                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+                {
+                    @Html.ActionLink("Sil", "Delete", new { id = item.Id })
+                }
+                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+                {
+                    <a href="Yonetim/Yorum/KaliciSil/@item.Id">Kalıcı Sil</a>
+                }
+            </td>
+        </tr>
+    }
 
 </table>

@@ -20,7 +20,7 @@ namespace AIOCMS.Areas.Yonetim.Data
         public static bool YetkiliMi(enmYetkiler yetki,System.Web.Routing.RouteData rData)
         {
             var istekYapilanKontroller = rData.Values["Controller"].ToString() + "Controller";
-            var kulYetki = Kullanici.Yetkiler[istekYapilanKontroller];
+            var kulYetki = Kullanici.Yetkiler[istekYapilanKontroller.ToUpper()];
            return ((enmYetkiler)kulYetki & yetki) == yetki;
         }
     }

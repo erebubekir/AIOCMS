@@ -24,11 +24,13 @@ namespace AIOCMS.Areas.Yonetim.Data
             {
                 if (filterContext.HttpContext.Request.Cookies["KullaniciAdiCk"] != null)
                 {
-                    filterContext.HttpContext.Response.Redirect("/Yonetim/KullaniciIslemleri/OturumGiris");
+                  
+                    filterContext.Result = new RedirectResult("/Yonetim/KullaniciIslemleri/OturumGiris");
                 }
                 else
                 {
-                    filterContext.HttpContext.Response.Redirect("/Yonetim/KullaniciIslemleri/Giris");
+                    filterContext.Result = new RedirectResult("/Yonetim/KullaniciIslemleri/Giris");
+
                 }
             }
             else
@@ -38,9 +40,9 @@ namespace AIOCMS.Areas.Yonetim.Data
                 {
                     return;
                 }
-                filterContext.HttpContext.Response.Redirect("/Yonetim/KullaniciIslemleri/YetkisizGiris");
+                filterContext.Result = new RedirectResult("/Yonetim/KullaniciIslemleri/YetkisizGiris");
             }
-            base.OnActionExecuting(filterContext);
+            return;
         }
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {

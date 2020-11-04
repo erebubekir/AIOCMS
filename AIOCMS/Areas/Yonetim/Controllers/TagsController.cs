@@ -14,7 +14,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 {
     public class TagsController : Controller
     {
-        private CMSDBEntities2 db = new CMSDBEntities2();
+        private CMSDBEntities db = new CMSDBEntities();
 
         // GET: Yonetim/Tags
         [Yetki(enmYetkiler.Listeleme)]
@@ -63,8 +63,8 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 
             if (ModelState.IsValid)
             {
-                var toplamUrl = db.tbl_Tags.Where(d => d.Url == tbl_Tags.Url).Count();
-                if (toplamUrl < 1)
+            
+                if (!db.tbl_Tags.Any(d => d.Url == tbl_Tags.Url))
                 {
                     tbl_Tags.OlusturmaTarihi = DateTime.Now;
                     db.tbl_Tags.Add(tbl_Tags);
@@ -115,10 +115,11 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             Dictionary<string, string> result = new Dictionary<string, string>();
             if (ModelState.IsValid)
             {
-                var toplamUrl = db.tbl_Tags.Where(d => d.Url == tbl_Tags.Url).Where(d => d.Id != tbl_Tags.Id).Count();
-                if (toplamUrl < 1)
+             
+                if (!db.tbl_Tags.Any(d=>d.Url==tbl_Tags.Url && d.Id!=tbl_Tags.Id))
                 {
-                    tbl_Tags.OlusturmaTarihi = DateTime.Now;
+                  //  tbl_Tags.OlusturmaTarihi = DateTime.Now;
+                    tbl_Tags.GuncellemeTarihi = DateTime.Now;
                     db.Entry(tbl_Tags).State = EntityState.Modified;
                     db.SaveChanges();
                     result["status"] = "success";

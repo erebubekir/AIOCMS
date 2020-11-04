@@ -29,7 +29,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         public ActionResult Giris(string KullaniciAdi, string Sifre)
         {
-            CMSDBEntities2 db = new CMSDBEntities2();
+            CMSDBEntities db = new CMSDBEntities();
             if (Request.Cookies["KullaniciAdiCk"] != null)
             {
                 KullaniciAdi = Crypto.SifreyiCozAES(Request.Cookies["KullaniciAdiCk"].Value, Crypto.paylasilanAnahtar);
@@ -73,6 +73,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         public ActionResult Cikis()
         {
             Session.RemoveAll();
+            Session.Abandon();
             Session.Clear();
             HttpContext.Response.Cookies["KullaniciAdiCk"].Expires = DateTime.Now.AddDays(-1);
             return Redirect("/");

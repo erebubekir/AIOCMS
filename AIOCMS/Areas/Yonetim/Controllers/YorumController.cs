@@ -17,14 +17,16 @@ namespace AIOCMS.Areas.Yonetim.Controllers
     /// </summary>   
     public class YorumController : Controller
     {
-        private CMSDBEntities2 db = new CMSDBEntities2();
+        private CMSDBEntities db = new CMSDBEntities();
 
         // GET: Yonetim/Yorum
         [Yetki(enmYetkiler.Listeleme)]
         public ActionResult Index()
         {
-            var tbl_Yorum = db.tbl_Yorum.Include(t => t.tbl_Icerik).Include(t => t.tbl_Yorum2);
-            return View(tbl_Yorum.ToList());
+            var tbl_Yorum = db.tbl_Yorum.AsQueryable();
+            if (!KullaniciBilgi.YetkiliMi(enmYetkiler.KaliciSilme, RouteData))
+                tbl_Yorum = tbl_Yorum.Where(d => d.SilinmeTarihi == null);
+            return View(tbl_Yorum.Include(t => t.tbl_Icerik).ToList());
         }
 
         // GET: Yonetim/Yorum/Details/5
@@ -43,72 +45,6 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             return View(tbl_Yorum);
         }
 
-        // GET: Yonetim/Yorum/Create
-        [Yetki(enmYetkiler.Ekleme)]
-        public ActionResult Create()
-        {
-            ViewBag.IcerikId = new SelectList(db.tbl_Icerik, "Id", "Baslik");
-            ViewBag.UstId = new SelectList(db.tbl_Yorum, "Id", "AdiSoyadi");
-            return View();
-        }
-
-        // POST: Yonetim/Yorum/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Yetki(enmYetkiler.Ekleme)]
-        public ActionResult Create([Bind(Include = "Id,AdiSoyadi,Yorum,Puan,UstId,IcerikId,OlusturmaTarihi,GuncellemeTarihi,SilinmeTarihi,AktifDurumu,BegeniSayisi,BegenmemeSayisi")] tbl_Yorum tbl_Yorum)
-        {
-            if (ModelState.IsValid)
-            {
-                db.tbl_Yorum.Add(tbl_Yorum);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.IcerikId = new SelectList(db.tbl_Icerik, "Id", "Baslik", tbl_Yorum.IcerikId);
-            ViewBag.UstId = new SelectList(db.tbl_Yorum, "Id", "AdiSoyadi", tbl_Yorum.UstId);
-            return View(tbl_Yorum);
-        }
-
-        // GET: Yonetim/Yorum/Edit/5
-        [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
-            if (tbl_Yorum == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.IcerikId = new SelectList(db.tbl_Icerik, "Id", "Baslik", tbl_Yorum.IcerikId);
-            ViewBag.UstId = new SelectList(db.tbl_Yorum, "Id", "AdiSoyadi", tbl_Yorum.UstId);
-            return View(tbl_Yorum);
-        }
-
-        // POST: Yonetim/Yorum/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
-        public ActionResult Edit([Bind(Include = "Id,AdiSoyadi,Yorum,Puan,UstId,IcerikId,OlusturmaTarihi,GuncellemeTarihi,SilinmeTarihi,AktifDurumu,BegeniSayisi,BegenmemeSayisi")] tbl_Yorum tbl_Yorum)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(tbl_Yorum).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.IcerikId = new SelectList(db.tbl_Icerik, "Id", "Baslik", tbl_Yorum.IcerikId);
-            ViewBag.UstId = new SelectList(db.tbl_Yorum, "Id", "AdiSoyadi", tbl_Yorum.UstId);
-            return View(tbl_Yorum);
-        }
-
         // GET: Yonetim/Yorum/Delete/5
         [Yetki(enmYetkiler.Silme)]
         public ActionResult Delete(int? id)
@@ -117,19 +53,19 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
+            tbl_Yorum tbl_Yorum = db.tbl_Yorum.SingleOrDefault(d=>d.Id==id);
             if (tbl_Yorum == null)
             {
                 return HttpNotFound();
             }
+            tbl_Yorum.SilinmeTarihi = DateTime.Now;
+            db.Entry(tbl_Yorum).State = EntityState.Modified;
+            db.SaveChanges();
             return View(tbl_Yorum);
         }
-
-        // POST: Yonetim/Yorum/Delete/5
-        [HttpPost, ActionName("Delete")]
+ 
         [Yetki(enmYetkiler.KaliciSilme)]
-        // [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult KaliciSil(int id)
         {
             tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
             db.tbl_Yorum.Remove(tbl_Yorum);
@@ -138,16 +74,13 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         }
 
         // POST: Yonetim/Yorum/Aktiflik/5
-        [HttpPost, ActionName("Aktiflik")]
+       
         // [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
         public ActionResult Aktiflik(int id)
         {
             tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
-            if(tbl_Yorum.AktifDurumu == true)
-                tbl_Yorum.AktifDurumu = false;
-            else 
-                tbl_Yorum.AktifDurumu = true;
+            tbl_Yorum.AktifDurumu = !tbl_Yorum.AktifDurumu;
             db.Entry(tbl_Yorum).State = EntityState.Modified;
             db.SaveChanges();
             return new HttpStatusCodeResult(HttpStatusCode.OK);

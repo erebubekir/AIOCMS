@@ -13,7 +13,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 {
     public class IcerikController : Controller
     {
-        private CMSDBEntities2 db = new CMSDBEntities2();
+        private CMSDBEntities db = new CMSDBEntities();
 
         [Yetki(enmYetkiler.Listeleme)]
         public ActionResult Index()
@@ -23,9 +23,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                 tbl_Icerik = tbl_Icerik.Where(d => d.SilinmeTarihi == null).AsQueryable();
             if (!KullaniciBilgi.YetkiliMi(enmYetkiler.ButunYetkiler, RouteData))
                 tbl_Icerik = tbl_Icerik.Where(d => d.KullaniciId == KullaniciBilgi.Kullanici.Id).AsQueryable();
-
-            tbl_Icerik.Include(t => t.tbl_Icerik2).Include(t => t.tbl_Kullanici);
-            return View(tbl_Icerik.ToList());
+            return View(tbl_Icerik.Include(t => t.tbl_Icerik2).Include(t => t.tbl_Kullanici).ToList());
         }
         [Yetki(enmYetkiler.Detay)]
         public ActionResult Details(int? id)

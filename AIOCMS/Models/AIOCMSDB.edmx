@@ -495,7 +495,7 @@
           <End Role="tbl_Icerik" Type="Self.tbl_Icerik" Multiplicity="*" />
           <End Role="tbl_Tags" Type="Self.tbl_Tags" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="CMSDBEntities2" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="CMSDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tbl_Ayarlar" EntityType="Self.tbl_Ayarlar" />
           <EntitySet Name="tbl_Icerik" EntityType="Self.tbl_Icerik" />
           <EntitySet Name="tbl_Izinler" EntityType="Self.tbl_Izinler" />
@@ -578,7 +578,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="CMSDBModelStoreContainer" CdmEntityContainer="CMSDBEntities2">
+        <EntityContainerMapping StorageEntityContainer="CMSDBModelStoreContainer" CdmEntityContainer="CMSDBEntities">
           <EntitySetMapping Name="tbl_Ayarlar">
             <EntityTypeMapping TypeName="CMSDBModel.tbl_Ayarlar">
               <MappingFragment StoreEntitySet="tbl_Ayarlar">
