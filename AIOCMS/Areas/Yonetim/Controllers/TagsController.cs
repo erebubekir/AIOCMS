@@ -153,7 +153,10 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             {
                 return HttpNotFound();
             }
-            return View(tbl_Tags);
+            tbl_Tags.SilinmeTarihi = DateTime.Now;
+            db.Entry(tbl_Tags).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // POST: Yonetim/Tags/Delete/5
@@ -163,6 +166,10 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         public ActionResult KaliciSil(int id)
         {
             tbl_Tags tbl_Tags = db.tbl_Tags.SingleOrDefault(d => d.Id == id);
+            if (tbl_Tags == null)
+            {
+                return HttpNotFound();
+            }
             db.tbl_Tags.Remove(tbl_Tags);
             db.SaveChanges();
             return RedirectToAction("Index");
