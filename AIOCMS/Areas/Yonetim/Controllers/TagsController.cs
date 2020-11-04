@@ -57,20 +57,21 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Ekleme)]
-        public string Create(tbl_Tags tbl_Tags)
+        public string Create(tbl_Tags istek)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
 
             if (ModelState.IsValid)
             {
-            
-                if (!db.tbl_Tags.Any(d => d.Url == tbl_Tags.Url))
+
+                if (!db.tbl_Tags.Any(d => d.Url == istek.Url))
                 {
-                    tbl_Tags.OlusturmaTarihi = DateTime.Now;
-                    db.tbl_Tags.Add(tbl_Tags);
+                    istek.OlusturmaTarihi = DateTime.Now;
+                    db.tbl_Tags.Add(istek);
                     db.SaveChanges();
                     result["status"] = "success";
                     result["message"] = "Kayıt Başarıyla Eklendi";
+                    result["reload"] = "true";
                 }
                 else
                 {
@@ -115,10 +116,10 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             Dictionary<string, string> result = new Dictionary<string, string>();
             if (ModelState.IsValid)
             {
-             
-                if (!db.tbl_Tags.Any(d=>d.Url==tbl_Tags.Url && d.Id!=tbl_Tags.Id))
+
+                if (!db.tbl_Tags.Any(d => d.Url == tbl_Tags.Url && d.Id != tbl_Tags.Id))
                 {
-                  //  tbl_Tags.OlusturmaTarihi = DateTime.Now;
+                    //  tbl_Tags.OlusturmaTarihi = DateTime.Now;
                     tbl_Tags.GuncellemeTarihi = DateTime.Now;
                     db.Entry(tbl_Tags).State = EntityState.Modified;
                     db.SaveChanges();
@@ -161,19 +162,29 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         }
 
         // POST: Yonetim/Tags/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.KaliciSilme)]
-        public ActionResult KaliciSil(int id)
+        public string KaliciSil(int id)
         {
+            Dictionary<string, string> result = new Dictionary<string, string>();
             tbl_Tags tbl_Tags = db.tbl_Tags.SingleOrDefault(d => d.Id == id);
             if (tbl_Tags == null)
             {
-                return HttpNotFound();
+                result["status"] = "error";
+                result["message"] = "Bişeyler Yanlış Gidiyor";
+
             }
-            db.tbl_Tags.Remove(tbl_Tags);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            else
+            {
+                db.tbl_Tags.Remove(tbl_Tags);
+                db.SaveChanges();
+                result["status"] = "success";
+                result["message"] = "Başarılı Bir Şekilde Silindi";
+                result["reload"] = "true";
+            }
+
+            return JsonConvert.SerializeObject(result);
         }
 
         protected override void Dispose(bool disposing)

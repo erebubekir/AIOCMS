@@ -59,22 +59,8 @@
 <script>
     function create(that) {
         var formData = $(that).serialize();
-        jQuery.ajax({
-            method: "post", // gönderme tipi
-            url: "../Tags/create", // gönderdiğimiz Adres
-            data: formData, // gönderilcek veriler
-            success: function (cevap) { // eğer başarılı ise gelen cevabı cevap değişkenine basar
-                cevap = $.parseJSON(cevap);// Gelen Değeri Json Olarak Parse Ediyoruz
-                if (cevap.status == "success") {
-
-                    swal("Ekleme İşlemi Başarılı", "Listeye Yönelendirileceksiniz", cevap.status).then((value) => {
-                        location.href = "../Tags";
-                    });;
-
-
-                }
-                return false;
-            }
+        ajaxSpeak("", formData, "", function (cevap) {
+            alert("Selam İş Bitti");
         });
         return false;
     }

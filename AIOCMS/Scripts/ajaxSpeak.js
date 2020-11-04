@@ -13,6 +13,8 @@ function ajaxSpeak(url, data, method, callback) {
         data: data, // gönderilcek veriler
         success: function (cevap) { // eğer başarılı ise gelen cevabı cevap değişkenine basar
             cevap = $.parseJSON(cevap);// Gelen Değeri Json Olarak Parse Ediyoruz
+            console.log(cevap);
+            
             if (cevap.message != "" && cevap.message != 'undefined') {
                 swal(cevap.message, "", cevap.status).then((value) => {
                     speakLoad(cevap);
@@ -30,10 +32,10 @@ function ajaxSpeak(url, data, method, callback) {
 }
 
 function speakLoad(cevap) {
-    if (cevap.href != 'undefined') {
+    if (cevap.href != 'undefined' && cevap.href != '') {
         location.href = cevap.href;
     }
-    if (cevap.reload != 'undefined') {
+    if (cevap.reload != 'undefined' && cevap.reload != '') {
         location.reload();
     }
 }

@@ -69,10 +69,33 @@
                 }
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
-                    <a href="Yonetim/Yorum/KaliciSil/@item.Id">Kalıcı Sil</a>
+                    <a data-id="@item.Id" onclick="kaliciSil($(this));">Kalıcı Sil</a>
                 }
             </td>
         </tr>
     }
 
 </table>
+
+<script>
+    function kaliciSil(that) {
+        swal({
+            title: "Silmek İstediğinize Eminmisiniz",
+            text: "Bu İşlemin Gerişi Dönüşü Mümkün Değil",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((status) => {
+                if (status) {
+                    var data = "id=" + $(that).attr("data-id");
+                    ajaxSpeak("../Tags/KaliciSil", data, "", function (cevap) {
+                        console.log("İşimi Bitirdim");
+                    });
+                }
+            });
+
+
+       
+    }
+</script>
