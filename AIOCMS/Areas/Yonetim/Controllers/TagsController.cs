@@ -57,7 +57,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Ekleme)]
-        public string Create(tbl_Tags istek)
+        public JsonResult Create(tbl_Tags istek)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
 
