@@ -86,7 +86,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                 result["message"] = "Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz";
             }
 
-            return JsonConvert.SerializeObject(result);
+            return Json(result);
         }
 
         // GET: Yonetim/Tags/Edit/5
