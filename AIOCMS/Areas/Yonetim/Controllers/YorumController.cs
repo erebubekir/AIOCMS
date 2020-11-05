@@ -47,21 +47,37 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 
         // GET: Yonetim/Yorum/Delete/5
         [Yetki(enmYetkiler.Silme)]
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
+        public JsonResult Delete(int? id)
+        {          
+            
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            tbl_Yorum tbl_Yorum = db.tbl_Yorum.SingleOrDefault(d => d.Id == id);
+            if (tbl_Yorum == null || id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                result["status"] = "error";
+                result["message"] = "Bişeyler Yanlış Gidiyor";
+
             }
-            tbl_Yorum tbl_Yorum = db.tbl_Yorum.SingleOrDefault(d=>d.Id==id);
-            if (tbl_Yorum == null)
+            else
             {
-                return HttpNotFound();
+                if (tbl_Yorum.SilinmeTarihi == null)
+                {
+                    tbl_Yorum.AktifDurumu = false;
+                    tbl_Yorum.SilinmeTarihi = DateTime.Now;
+                }
+                else
+                {
+                    tbl_Yorum.AktifDurumu = true;
+                    tbl_Yorum.SilinmeTarihi = null;
+                }                               
+                db.Entry(tbl_Yorum).State = EntityState.Modified;
+                db.SaveChanges();
+                result["status"] = "success";
+                result["message"] = "İşlem Başarılı";
+                result["reload"] = "true";
             }
-            tbl_Yorum.SilinmeTarihi = DateTime.Now;
-            db.Entry(tbl_Yorum).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            return Json(result);
+
         }
  
         [Yetki(enmYetkiler.KaliciSilme)]

@@ -8,39 +8,17 @@
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.AdiSoyadi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Yorum)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Puan)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OlusturmaTarihi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.GuncellemeTarihi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SilinmeTarihi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AktifDurumu)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BegeniSayisi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BegenmemeSayisi)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tbl_Icerik.Baslik)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tbl_Yorum2.AdiSoyadi)
-        </th>
+        <th>Ad Soyad</th>
+        <th>Yorum</th>
+        <th>Puan</th>
+        <th>Oluşturma Tarihi</th>
+        <th>Güncelleme Tarihi</th>
+        <th>Silinme Tarihi</th>
+        <th>Aktif Durumu</th>
+        <th>Beğeni Sayısı</th>
+        <th>Beğenmeme Sayısı</th>
+        <th>Başlık</th>
+        <th>Üst Ad Soyad</th>
         <th>Seçenekler</th>
     </tr>
 
@@ -83,12 +61,12 @@
             <td>
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Detay, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
-                    @Html.ActionLink("Detay", "Details", new { id = item.Id })
+                    <a href="/Yonetim/Yorum/Details/@item.Id">Düzenle</a>
                 }
                 |
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
-                    @Html.ActionLink("Sil", "Delete", new { id = item.Id })
+                    <a style="cursor: pointer;" data-id="@item.Id" onclick="updateSil($(this));">Sil</a>
                 }
                 |
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
@@ -98,7 +76,7 @@
                 |
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
-                    <a style="cursor: pointer;" data-id="@item.Id" onclick="update($(this));">Akfilik</a>
+                    <a style="cursor: pointer;" data-id="@item.Id" onclick="updateAktiflik($(this));">Akfilik</a>
                 }
 
             </td>
@@ -127,9 +105,14 @@
             });
     }
 
-    function update(res) {
-        var data = "id=" + $(res).attr("data-id");        
+    function updateAktiflik(that) {
+        var data = "id=" + $(that).attr("data-id");        
         ajaxSpeak("../Yorum/Aktiflik", data, "", "");       
+        return false;
+    }
+    function updateSil(that) {
+        var data = "id=" + $(that).attr("data-id");
+        ajaxSpeak("../Yorum/Delete", data, "", "");
         return false;
     }
 
