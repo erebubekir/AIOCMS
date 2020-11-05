@@ -129,6 +129,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Yonetim\Controllers\BaseController.cs" />
     <Compile Include="Areas\Yonetim\Controllers\HomeController.cs" />
     <Compile Include="Areas\Yonetim\Controllers\IcerikController.cs" />
     <Compile Include="Areas\Yonetim\Controllers\KullaniciController.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Areas\Yonetim\Controllers\YorumController.cs" />
     <Compile Include="Areas\Yonetim\Data\CommonExtensions.cs" />
     <Compile Include="Areas\Yonetim\Data\Crypto.cs" />
+    <Compile Include="Areas\Yonetim\Data\enmStatus.cs" />
     <Compile Include="Areas\Yonetim\Data\enmYetkiler.cs" />
     <Compile Include="Areas\Yonetim\Data\IzinVM.cs" />
     <Compile Include="Areas\Yonetim\Data\KontrollerTipi.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\MyHelper.cs" />
     <Compile Include="Models\AIOCMSDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -284,7 +287,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Yonetim\Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

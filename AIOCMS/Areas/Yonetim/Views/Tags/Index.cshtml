@@ -1,14 +1,6 @@
 ﻿@model IEnumerable<AIOCMS.Models.tbl_Tags>
 
-@{
-    ViewBag.Title = "Index";
-}
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Yeni Tag", "Create")
-</p>
+<h2>Tag Yönetimi <a class="btn btn-success pull-right" href="Tags/Create">Yeni Tag Ekle</a></h2>
 <table class="table">
     <tr>
         <th>
@@ -34,42 +26,48 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr style="@(item.SilinmeTarihi != null?"background-color:#f5d2d2":"")">
             <td>
                 @item.Adi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OlusturmaTarihi)
+                @item.OlusturmaTarihi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GuncellemeTarihi)
+                @item.GuncellemeTarihi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SilinmeTarihi)
+                @item.SilinmeTarihi
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AktifDurumu)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Url)
+                @item.Url
             </td>
             <td>
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
-                    <a href="Yonetim/Yorum/Edit/@item.Id">Düzenle</a>
+                    <a class="btn btn-primary" href="Tags/Edit/@item.Id"><i class="glyphicon glyphicon-edit"></i> Düzenle</a>
                 }
                 |
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Detay, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
-                    @Html.ActionLink("Detay", "Details", new { id = item.Id })
+                    <a class="btn btn-info" href="Tags/Details/@item.Id"><i class="glyphicon glyphicon-info-sign"></i> Detay</a>
                 }
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+                |
+                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi == null)
                 {
-                    @Html.ActionLink("Sil", "Delete", new { id = item.Id })
+                    <a class="btn btn-warning esitle" data-id="@item.Id" onclick="Delete($(this));"><i class="glyphicon glyphicon-inbox"></i> Sil</a>
                 }
+                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi != null)
+                {
+                    <a class="btn btn-default esitle" data-id="@item.Id" onclick="GeriAl($(this));"><i class="glyphicon glyphicon-retweet"></i> Geri Al</a>
+                }
+                |
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
-                    <a data-id="@item.Id" onclick="kaliciSil($(this));">Kalıcı Sil</a>
+                    <a class="btn btn-danger" data-id="@item.Id" onclick="kaliciSil($(this));"><i class="glyphicon glyphicon-trash"></i> Kalıcı Sil</a>
                 }
             </td>
         </tr>
@@ -92,6 +90,36 @@
                     ajaxSpeak("../Tags/KaliciSil", data, "", function (cevap) {
                         console.log("İşimi Bitirdim");
                     });
+                }
+            });
+    }
+    function Delete (that) {
+        swal({
+            title: "Silmek İstediğinize Eminmisiniz",
+            text: "Bu Bir Geri Dönüşüm İşlemi",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((status) => {
+                if (status) {
+                    var data = "id=" + $(that).attr("data-id");
+                    ajaxSpeak("../Tags/delete", data, "");
+                }
+            });
+    }
+    function GeriAl(that) {
+        swal({
+            title: "Bu İçeriği Geri Yüklemek İstediğinize Eminmisiniz ?",
+            text: "Bu Bir Geri Dönüşüm İşlemi",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((status) => {
+                if (status) {
+                    var data = "id=" + $(that).attr("data-id");
+                    ajaxSpeak("../Tags/GeriAl", data, "");
                 }
             });
     }

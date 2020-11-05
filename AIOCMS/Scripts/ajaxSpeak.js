@@ -1,10 +1,11 @@
 ﻿//Bu Fonksiyon ajax işlemlerini uzun uzun yapmak yerine hızlı yapmamıza Olanak Tanıyor
 
+
 function ajaxSpeak(url, data, method, callback) {
-    if (url == "" || url == 'undefined') {
+    if (url == "" || typeof url == 'undefined') {
         url = location.href;
     }
-    if (method == "" || method == 'undefined') {
+    if (method == "" || typeof method == 'undefined') {
         method = "post";
     }
     $.ajax({
@@ -15,10 +16,10 @@ function ajaxSpeak(url, data, method, callback) {
             //cevap = $.parseJSON(cevap);// Gelen Değeri Json Olarak Parse Ediyoruz
             console.log(cevap);
             
-            if (cevap.message != "" && cevap.message != 'undefined') {
+            if (cevap.message != "" && typeof cevap.message != 'undefined') {
                 swal(cevap.message, "", cevap.status).then((value) => {
                     speakLoad(cevap);
-                    if (callback != "" && callback != 'undefined') {
+                    if (callback != "" && typeof callback != 'undefined') {
                         callback(cevap);
                     }
 
@@ -32,10 +33,11 @@ function ajaxSpeak(url, data, method, callback) {
 }
 
 function speakLoad(cevap) {
-    if (cevap.href != 'undefined' && cevap.href != '') {
+    if (typeof cevap.href != 'undefined' && cevap.href != '') {
         location.href = cevap.href;
     }
-    if (cevap.reload != 'undefined' && cevap.reload != '') {
+    if (typeof cevap.reload != 'undefined' && cevap.reload != '') {
+        console.log("heyt   ");
         location.reload();
     }
 }

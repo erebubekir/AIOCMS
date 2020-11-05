@@ -12,10 +12,9 @@ using Newtonsoft.Json;
 
 namespace AIOCMS.Areas.Yonetim.Controllers
 {
-    public class TagsController : Controller
+    public class TagsController : BaseController
     {
         private CMSDBEntities db = new CMSDBEntities();
-
         // GET: Yonetim/Tags
         [Yetki(enmYetkiler.Listeleme)]
         public ActionResult Index()
@@ -59,31 +58,48 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [Yetki(enmYetkiler.Ekleme)]
         public JsonResult Create(tbl_Tags istek)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
-
             if (ModelState.IsValid)
             {
-
-                if (!db.tbl_Tags.Any(d => d.Url == istek.Url))
+                if (string.IsNullOrEmpty(istek.Adi))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Adı Alanı Boş Geçilemez");
+                  
+                }
+                else if (string.IsNullOrEmpty(istek.Url))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Seo Url Alanı Boş Geçilemez");
+               
+                }
+                else if (db.tbl_Tags.Any(d => d.Url == istek.Url))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Bu Url Başka Bir Yerde Kullanılmış");
+                }
+                else
                 {
                     istek.OlusturmaTarihi = DateTime.Now;
                     db.tbl_Tags.Add(istek);
                     db.SaveChanges();
-                    result["status"] = "success";
-                    result["message"] = "Kayıt Başarıyla Eklendi";
-                    result["reload"] = "true";
-                }
-                else
-                {
-                    result["status"] = "error";
-                    result["message"] = "Bu Url Başka Bir Yerde Kullanılmış";
+                    result
+                        .Status(enmStatus.success)
+                        .Href("Tags")
+                        .Message("Kayıt Başarıyla Eklendi");
+                    
+                    
                 }
 
             }
             else
             {
-                result["status"] = "error";
-                result["message"] = "Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz";
+                result
+                    .Status(enmStatus.success)
+                    .Message("Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz");
+           
             }
 
             return Json(result);
@@ -111,80 +127,151 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
-        public string Edit(tbl_Tags tbl_Tags)
+        public JsonResult Edit(tbl_Tags istek)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
             if (ModelState.IsValid)
             {
-
-                if (!db.tbl_Tags.Any(d => d.Url == tbl_Tags.Url && d.Id != tbl_Tags.Id))
+                if (string.IsNullOrEmpty(istek.Adi))
                 {
-                    //  tbl_Tags.OlusturmaTarihi = DateTime.Now;
-                    tbl_Tags.GuncellemeTarihi = DateTime.Now;
-                    db.Entry(tbl_Tags).State = EntityState.Modified;
-                    db.SaveChanges();
-                    result["status"] = "success";
-                    result["message"] = "Kayıt Başarıyla Güncellendi";
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Adı Alanı Boş Geçilemez");
+
+                }
+                else if (string.IsNullOrEmpty(istek.Url))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Seo Url Alanı Boş Geçilemez");
+
+                }
+                else if (db.tbl_Tags.Any(d => d.Url == istek.Url && d.Id != istek.Id))
+                {
+                   
+                    result
+                           .Status(enmStatus.warning)
+                           .Message("Bu Url Başka Bir Yerde Kullanılmış");
                 }
                 else
                 {
-                    result["status"] = "error";
-                    result["message"] = "Bu Url Başka Bir Yerde Kullanılmış";
+                    istek.GuncellemeTarihi = DateTime.Now;
+                    db.Entry(istek).State = EntityState.Modified;
+                    db.SaveChanges();
+                    result
+                        .Status(enmStatus.success)
+                        .Message("Kayıt Başarıyla Güncellendi")
+                        .Reload();
+
                 }
 
             }
             else
             {
-                result["status"] = "error";
-                result["message"] = "Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz";
+                result
+                    .Status(enmStatus.error)
+                    .Message("Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz");
+   
             }
 
-            return JsonConvert.SerializeObject(result);
+            return Json(result);
         }
 
         // GET: Yonetim/Tags/Delete/5
+        [HttpPost]
         [Yetki(enmYetkiler.Silme)]
-        public ActionResult Delete(int? id)
+        public JsonResult Delete(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                result
+                    .Status(enmStatus.error)
+                    .Message("Bişeyler Yanlış Gidiyor");
+
             }
             tbl_Tags tbl_Tags = db.tbl_Tags.SingleOrDefault(d => d.Id == id);
             if (tbl_Tags == null)
             {
-                return HttpNotFound();
+                result
+                  .Status(enmStatus.error)
+                  .Message("Bişeyler Yanlış Gidiyor");
+
             }
-            tbl_Tags.SilinmeTarihi = DateTime.Now;
-            db.Entry(tbl_Tags).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            else
+            {
+                tbl_Tags.SilinmeTarihi = DateTime.Now;
+                db.Entry(tbl_Tags).State = EntityState.Modified;
+                db.SaveChanges();
+                result
+                  .Status(enmStatus.success)
+                  .Message("Başarıyla Geri Dönüşüme Gönderildi")
+                  .Reload();
+
+            }
+
+            return Json(result);
+        }
+
+        // GET: Yonetim/Tags/Delete/5
+        [HttpPost]
+        [Yetki(enmYetkiler.KaliciSilme)]
+        public JsonResult GeriAl(int? id)
+        {
+            if (id == null)
+            {
+                result
+                    .Status(enmStatus.error)
+                    .Message("Bişeyler Yanlış Gidiyor");
+            
+            }
+            tbl_Tags tbl_Tags = db.tbl_Tags.SingleOrDefault(d => d.Id == id);
+            if (tbl_Tags == null)
+            {
+                result
+                  .Status(enmStatus.error)
+                  .Message("Bişeyler Yanlış Gidiyor");
+
+            }
+            else
+            {
+                tbl_Tags.SilinmeTarihi = null;
+                db.Entry(tbl_Tags).State = EntityState.Modified;
+                db.SaveChanges();
+                result
+                  .Status(enmStatus.success)
+                  .Message("Başarıyla Geri Yüklendi")
+                  .Reload();
+
+            }
+
+            return Json(result);
         }
 
         // POST: Yonetim/Tags/Delete/5
         [HttpPost]
         //[ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.KaliciSilme)]
-        public string KaliciSil(int id)
+        public JsonResult KaliciSil(int id)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
+           
             tbl_Tags tbl_Tags = db.tbl_Tags.SingleOrDefault(d => d.Id == id);
             if (tbl_Tags == null)
             {
-                result["status"] = "error";
-                result["message"] = "Bişeyler Yanlış Gidiyor";
-
+                result
+                   .Status(enmStatus.error)
+                   .Message("Bişeyler Yanlış Gidiyor");
             }
             else
             {
                 db.tbl_Tags.Remove(tbl_Tags);
                 db.SaveChanges();
-                result["status"] = "success";
-                result["message"] = "Başarılı Bir Şekilde Silindi";
-                result["reload"] = "true";
+                result
+                 .Status(enmStatus.success)
+                 .Message("Başarılı Bir Şekilde Silindi")
+                 .Reload();
+     
             }
 
-            return JsonConvert.SerializeObject(result);
+            return Json(result);
         }
 
         protected override void Dispose(bool disposing)

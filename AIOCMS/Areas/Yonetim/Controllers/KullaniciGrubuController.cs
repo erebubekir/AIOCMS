@@ -54,6 +54,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create( tbl_KullaniciGrubu model)
         {
+        
             if (ModelState.IsValid)
             {
                 model.OlusturmaTarihi = DateTime.Now;

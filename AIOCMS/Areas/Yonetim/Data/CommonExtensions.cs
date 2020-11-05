@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AIOCMS.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace AIOCMS.Areas.Yonetim.Data
 {
@@ -51,6 +54,31 @@ namespace AIOCMS.Areas.Yonetim.Data
                 yetki = "0" + yetki;
             }
             return yetki;
+        }
+        public static Dictionary<string, object> Status(this Dictionary<string, object> dic, enmStatus stats)
+        {
+            dic["status"]=stats.ToString();
+            return dic;
+        }
+        public static Dictionary<string, object> Reload(this Dictionary<string, object> dic, bool reload = true)
+        {
+            dic["reload"] = reload?true:false;
+            return dic;
+        }
+        public static Dictionary<string, object> Message(this Dictionary<string, object> dic, string mesaj)
+        {
+            dic["message"] = mesaj;
+            return dic;
+        }   
+        public static Dictionary<string, object> Href(this Dictionary<string, object> dic, string href)
+        {
+            dic["href"] = MyHelper.YonetimUrl(href);
+            return dic;
+        }
+        public static Dictionary<string, object> CustomAdd(this Dictionary<string, object> dic, string key,string val)
+        {
+            dic[key] = val;
+            return dic;
         }
     }
 }

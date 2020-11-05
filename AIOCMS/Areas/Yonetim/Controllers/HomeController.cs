@@ -19,7 +19,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [Yetki(enmYetkiler.Silme|enmYetkiler.Listeleme)]
         public ActionResult Index()
         {
-
+     
             return View();
 
         }
