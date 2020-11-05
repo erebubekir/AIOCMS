@@ -4,7 +4,7 @@
 <table class="table">
     <tr>
         <th>
-            ADI
+            Adı
         </th>
         <th>
             Oluşturulma Trh.
@@ -50,7 +50,7 @@
                 }
             </td>
             <td>
-                <a href="@Html.BaseUrl(item.Url)"><i class="glyphicon glyphicon-link"></i> @item.Url</a>
+                <a href="@Html.BaseUrl(item.Url)" target="_blank"><i class="glyphicon glyphicon-link"></i> @item.Url</a>
             </td>
             <td class="text-right">
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
