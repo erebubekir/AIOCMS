@@ -243,7 +243,6 @@
     <Content Include="Areas\Yonetim\Views\KullaniciIslemleri\Giris.cshtml" />
     <Content Include="Areas\Yonetim\Views\KullaniciIslemleri\OturumGiris.cshtml" />
     <Content Include="Areas\Yonetim\Views\Tags\Create.cshtml" />
-    <Content Include="Areas\Yonetim\Views\Tags\Delete.cshtml" />
     <Content Include="Areas\Yonetim\Views\Tags\Details.cshtml" />
     <Content Include="Areas\Yonetim\Views\Tags\Edit.cshtml" />
     <Content Include="Areas\Yonetim\Views\Tags\Index.cshtml" />

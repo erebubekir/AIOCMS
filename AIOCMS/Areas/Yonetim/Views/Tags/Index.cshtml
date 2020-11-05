@@ -4,24 +4,24 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Adi)
+            ADI
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.OlusturmaTarihi)
+            Oluşturulma Trh.
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.GuncellemeTarihi)
+            Güncellenme Trh.
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SilinmeTarihi)
+            Silinme Trh.
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AktifDurumu)
+            Durumu
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Url)
+            Url Adresi
         </th>
-        <th>Seçenekler</th>
+        <th class="text-right">Seçenekler</th>
     </tr>
 
     @foreach (var item in Model)
@@ -40,12 +40,19 @@
                 @item.SilinmeTarihi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AktifDurumu)
+                @if (item.AktifDurumu)
+                {
+                    <a class="btn btn-success" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-ok"></i></a>
+                }
+                else
+                {
+                    <a class="btn btn-default" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-minus"></i></a>
+                }
             </td>
             <td>
-                @item.Url
+                <a href="@Html.BaseUrl(item.Url)"><i class="glyphicon glyphicon-link"></i> @item.Url</a>
             </td>
-            <td>
+            <td class="text-right">
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
                     <a class="btn btn-primary" href="Tags/Edit/@item.Id"><i class="glyphicon glyphicon-edit"></i> Düzenle</a>
@@ -93,7 +100,7 @@
                 }
             });
     }
-    function Delete (that) {
+    function Delete(that) {
         swal({
             title: "Silmek İstediğinize Eminmisiniz",
             text: "Bu Bir Geri Dönüşüm İşlemi",
@@ -122,5 +129,10 @@
                     ajaxSpeak("../Tags/GeriAl", data, "");
                 }
             });
+    }
+    function Status(that) {
+        var data = "id=" + $(that).attr("data-id");
+        var url = '@Html.YonetimUrl("Tags/Status")';
+        ajaxSpeak(url, data, "");
     }
 </script>

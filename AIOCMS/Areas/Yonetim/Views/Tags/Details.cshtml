@@ -1,66 +1,54 @@
 ﻿@model AIOCMS.Models.tbl_Tags
 
-@{
-    ViewBag.Title = "Details";
-}
 
-<h2>Details</h2>
+<h2> <a class="btn btn-default" href="@Html.YonetimUrl("Tags")"><i class="glyphicon glyphicon-chevron-left"></i></a> Tag Detay</h2>
+
 
 <div>
-    <h4>tbl_Tags</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Adi)
-        </dt>
+    <div>
+        <div class="row">
+            <label class="col-md-12">Adı : </label>
+            <div class="col-md-12">@Model.Adi</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Oluşturulma Tarihi : </label>
+            <div class="col-md-12">@Model.OlusturmaTarihi</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Son Güncellenme Tarihi : </label>
+            <div class="col-md-12">@Model.GuncellemeTarihi</div>
+        </div>
+        @if (Model.SilinmeTarihi != null)
+        {
+            <hr />
+            <div class="row">
+                <label class="col-md-12">Silinme Tarihi : </label>
+                <div class="col-md-12">@Model.SilinmeTarihi</div>
+            </div>
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.Adi)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.OlusturmaTarihi)
-        </dt>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Aktiflik Durumu : </label>
+            <div class="col-md-12">@Html.DisplayFor(model => model.AktifDurumu)</div>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.OlusturmaTarihi)
-        </dd>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Seo Url : </label>
+            <div class="col-md-12">@Model.Url</div>
+        </div>
+        <hr /><br />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.GuncellemeTarihi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.GuncellemeTarihi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SilinmeTarihi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SilinmeTarihi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AktifDurumu)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AktifDurumu)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Url)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Url)
-        </dd>
-
-    </dl>
+    </div>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+    {
+        <a class="btn btn-primary" href="Tags/Edit/@Model.Id"><i class="glyphicon glyphicon-edit"></i> Düzenle</a>
+    }
 </p>

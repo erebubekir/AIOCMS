@@ -1,10 +1,8 @@
 ﻿@model AIOCMS.Models.tbl_Tags
 
-@{
-    ViewBag.Title = "Edit";
-}
+<h2> <a class="btn btn-default" href="@Html.YonetimUrl("Tags")"><i class="glyphicon glyphicon-chevron-left"></i></a> Tag Düzenle</h2>
 
-<h2>Düzenleme</h2>
+
 
 
 <form onsubmit="return update($(this));">
@@ -13,22 +11,22 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-       @* @Html.HiddenFor(model => model.Id)*@
-        <input type="hidden" value="@Model.Id" name="Id" /> 
+        @* @Html.HiddenFor(model => model.Id)*@
+        <input type="hidden" value="@Model.Id" name="Id" />
         <div class="form-group">
             @*@Html.LabelFor(model => model.Adi, htmlAttributes: new { @class = "control-label col-md-2" })*@
-            <label class="control-label col-md-2">@Model.Adi</label>
-            <div class="col-md-10">
+            <label class="col-md-12">Adı - (@Model.Adi)</label>
+            <div class="col-md-12">
                 @*@Html.EditorFor(model => model.Adi, new { htmlAttributes = new { @class = "form-control" } })*@
-                <input type="text" value="@Model.Adi" name="Adi" class = "form-control"  />
+                <input type="text" value="@Model.Adi" name="Adi" class="form-control" />
                 @Html.ValidationMessageFor(model => model.Adi, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.AktifDurumu, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
+            @Html.LabelFor(model => model.AktifDurumu, htmlAttributes: new { @class = "col-md-12" })
+            <div class="col-md-12">
+                <div class="checkbox" style="padding-left:20px;">
                     @Html.EditorFor(model => model.AktifDurumu)
                     @Html.ValidationMessageFor(model => model.AktifDurumu, "", new { @class = "text-danger" })
                 </div>
@@ -36,26 +34,23 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">Seo Url</label>
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+            <div class=" col-md-12">
+                <input type="submit" value="Kaydet" class="btn btn-default" />
             </div>
         </div>
     </div>
 
 </form>
 
-<div>
-    @*@Html.ActionLink("Back to List", "Index")*@
-    <a href="Yonetim/Tags/Index" >Listeye Dön</a>
-</div>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
@@ -64,7 +59,7 @@
 <script>
     function update(that) {
         var formData = $(that).serialize();
-        ajaxSpeak("", formData,"")
+        ajaxSpeak("", formData, "")
         return false;
     }
 </script>

@@ -105,6 +105,35 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             return Json(result);
         }
 
+
+        [HttpPost]
+        [Yetki(enmYetkiler.Duzenleme)]
+        public JsonResult Status(int id)
+        {
+
+            tbl_Tags tbl_Tags = db.tbl_Tags.SingleOrDefault(d => d.Id == id);
+            if (tbl_Tags == null)
+            {
+                result
+                    .Status(enmStatus.error)
+                    .Message("Bişeyler Yanlış Gidiyor");
+           
+
+            }
+            else
+            {
+                tbl_Tags.AktifDurumu = !tbl_Tags.AktifDurumu;
+                db.Entry(tbl_Tags).State = EntityState.Modified;
+                db.SaveChanges();
+                result
+                  .Status(enmStatus.success)
+                  .Reload();
+    
+            }
+            return Json(result);
+        }
+
+
         // GET: Yonetim/Tags/Edit/5
         [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
         public ActionResult Edit(int? id)
