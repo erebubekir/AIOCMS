@@ -61,29 +61,55 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             tbl_Yorum.SilinmeTarihi = DateTime.Now;
             db.Entry(tbl_Yorum).State = EntityState.Modified;
             db.SaveChanges();
-            return View(tbl_Yorum);
+            return RedirectToAction("Index");
         }
  
         [Yetki(enmYetkiler.KaliciSilme)]
-        public ActionResult KaliciSil(int id)
+        public JsonResult KaliciSil(int id)
         {
-            tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
-            db.tbl_Yorum.Remove(tbl_Yorum);
-            db.SaveChanges();
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            tbl_Yorum tbl_Yorum = db.tbl_Yorum.SingleOrDefault(d => d.Id == id);
+            if (tbl_Yorum == null)
+            {
+                result["status"] = "error";
+                result["message"] = "Bişeyler Yanlış Gidiyor";
+
+            }
+            else
+            {
+                db.tbl_Yorum.Remove(tbl_Yorum);
+                db.SaveChanges();
+                result["status"] = "success";
+                result["message"] = "Başarılı Bir Şekilde Silindi";
+                result["reload"] = "true";
+            }
+            return Json(result);
         }
 
         // POST: Yonetim/Yorum/Aktiflik/5
        
         // [ValidateAntiForgeryToken]
-        [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
-        public ActionResult Aktiflik(int id)
+        [Yetki(enmYetkiler.Duzenleme)]
+        public JsonResult Aktiflik(int id)
         {
-            tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
-            tbl_Yorum.AktifDurumu = !tbl_Yorum.AktifDurumu;
-            db.Entry(tbl_Yorum).State = EntityState.Modified;
-            db.SaveChanges();
-            return new HttpStatusCodeResult(HttpStatusCode.OK);
+            Dictionary<string, string> result = new Dictionary<string, string>();           
+            tbl_Yorum tbl_Yorum = db.tbl_Yorum.SingleOrDefault(d => d.Id == id);
+            if (tbl_Yorum == null)
+            {
+                result["status"] = "error";
+                result["message"] = "Bişeyler Yanlış Gidiyor";
+
+            }
+            else
+            {                
+                tbl_Yorum.AktifDurumu = !tbl_Yorum.AktifDurumu;
+                db.Entry(tbl_Yorum).State = EntityState.Modified;
+                db.SaveChanges();
+                result["status"] = "success";
+                result["message"] = "İşlem Başarılı";
+                result["reload"] = "true";
+            }
+            return Json(result);        
         }
 
         protected override void Dispose(bool disposing)

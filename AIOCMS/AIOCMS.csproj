@@ -244,10 +244,8 @@
     <Content Include="Areas\Yonetim\Views\Tags\Details.cshtml" />
     <Content Include="Areas\Yonetim\Views\Tags\Edit.cshtml" />
     <Content Include="Areas\Yonetim\Views\Tags\Index.cshtml" />
-    <Content Include="Areas\Yonetim\Views\Yorum\Create.cshtml" />
     <Content Include="Areas\Yonetim\Views\Yorum\Delete.cshtml" />
     <Content Include="Areas\Yonetim\Views\Yorum\Details.cshtml" />
-    <Content Include="Areas\Yonetim\Views\Yorum\Edit.cshtml" />
     <Content Include="Areas\Yonetim\Views\Yorum\Index.cshtml" />
     <EntityDeploy Include="Models\AIOCMSDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
