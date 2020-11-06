@@ -4,11 +4,11 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Yorum Yönetimi</h2>
 
 <table class="table">
     <tr>
-        <th>Ad Soyad</th>
+        <th>Adı Soyadı</th>
         <th>Yorum</th>
         <th>Puan</th>
         <th>Oluşturma Tarihi</th>
@@ -18,65 +18,71 @@
         <th>Beğeni Sayısı</th>
         <th>Beğenmeme Sayısı</th>
         <th>Başlık</th>
-        <th>Üst Ad Soyad</th>
-        <th>Seçenekler</th>
+        <th>Üst Adı Soyadı</th>
+        <th class="text-right">Seçenekler</th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr style="@(item.SilinmeTarihi != null?"background-color:#f5d2d2":"")">
             <td>
-                @Html.DisplayFor(modelItem => item.AdiSoyadi)
+                @item.AdiSoyadi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Yorum)
+                @item.Yorum
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Puan)
+                @item.Puan
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OlusturmaTarihi)
+                @item.OlusturmaTarihi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GuncellemeTarihi)
+                @item.GuncellemeTarihi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SilinmeTarihi)
+                @item.SilinmeTarihi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AktifDurumu)
+                @if (item.AktifDurumu)
+                {
+                    <a class="btn btn-success" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-ok"></i></a>
+                }
+                else
+                {
+                    <a class="btn btn-default" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-minus"></i></a>
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BegeniSayisi)
+                @item.BegeniSayisi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BegenmemeSayisi)
+                @item.BegenmemeSayisi
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.tbl_Icerik.Baslik)
+                @item.tbl_Icerik.Baslik
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.tbl_Yorum2.AdiSoyadi)
+                @(item.tbl_Yorum2?.AdiSoyadi)
             </td>
-            <td>
+            <td class="text-right nowrap">
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Detay, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
-                    <a href="/Yonetim/Yorum/Details/@item.Id">Düzenle</a>
+                    <a class="btn btn-info" href="Yorum/Details/@item.Id"><i class="glyphicon glyphicon-info-sign"></i> Detay</a>
                 }
                 |
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi == null)
                 {
-                    <a style="cursor: pointer;" data-id="@item.Id" onclick="updateSil($(this));">Sil</a>
+                    <a class="btn btn-warning esitle" data-id="@item.Id" onclick="Delete($(this));"><i class="glyphicon glyphicon-inbox"></i> Sil</a>
+                }
+                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi != null)
+                {
+                    <a class="btn btn-default esitle" data-id="@item.Id" onclick="GeriAl($(this));"><i class="glyphicon glyphicon-retweet"></i> Geri Al</a>
                 }
                 |
                 @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
                 {
-                    <a style="cursor: pointer;" data-id="@item.Id" onclick="kaliciSil($(this));">Kalıcı Sil</a>
-                }
-                |
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
-                {
-                    <a style="cursor: pointer;" data-id="@item.Id" onclick="updateAktiflik($(this));">Akfilik</a>
+                    <a class="btn btn-danger" data-id="@item.Id" onclick="kaliciSil($(this));"><i class="glyphicon glyphicon-trash"></i> Kalıcı Sil</a>
                 }
 
             </td>
@@ -89,7 +95,7 @@
 <script>
     function kaliciSil(that) {
         swal({
-            title: "Silmek İstediğinize Emin Misiniz",
+            title: "Kalıcı Olarak Silmek İstediğinize Eminmisiniz",
             text: "Bu İşlemin Gerişi Dönüşü Mümkün Değil",
             icon: "warning",
             buttons: true,
@@ -98,22 +104,48 @@
             .then((status) => {
                 if (status) {
                     var data = "id=" + $(that).attr("data-id");
-                    ajaxSpeak("../Yorum/KaliciSil", data, "", function (cevap) {
+                     var url = '@Html.YonetimUrl("Yorum/KaliciSil")';
+                    ajaxSpeak(url, data, "", function (cevap) {
                         console.log("İşimi Bitirdim");
                     });
                 }
             });
     }
-
-    function updateAktiflik(that) {
-        var data = "id=" + $(that).attr("data-id");        
-        ajaxSpeak("../Yorum/Aktiflik", data, "", "");       
-        return false;
+    function Delete(that) {
+        swal({
+            title: "Silmek İstediğinize Eminmisiniz",
+            text: "Bu Bir Geri Dönüşüm İşlemi",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((status) => {
+                if (status) {
+                    var data = "id=" + $(that).attr("data-id");
+                     var url = '@Html.YonetimUrl("Yorum/delete")';
+                    ajaxSpeak(url, data, "");
+                }
+            });
     }
-    function updateSil(that) {
+    function GeriAl(that) {
+        swal({
+            title: "Bu İçeriği Geri Yüklemek İstediğinize Eminmisiniz ?",
+            text: "Bu Bir Geri Dönüşüm İşlemi",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((status) => {
+                if (status) {
+                    var data = "id=" + $(that).attr("data-id");
+                    var url = '@Html.YonetimUrl("Yorum/GeriAl")';
+                    ajaxSpeak(url, data, "");
+                }
+            });
+    }
+    function Status(that) {
         var data = "id=" + $(that).attr("data-id");
-        ajaxSpeak("../Yorum/Delete", data, "", "");
-        return false;
+        var url = '@Html.YonetimUrl("Yorum/Status")';
+        ajaxSpeak(url, data, "");
     }
-
 </script>

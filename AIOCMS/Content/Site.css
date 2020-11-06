@@ -25,3 +25,7 @@ textarea {
 .esitle {
     width: 88px;
 }
+
+.nowrap {
+    white-space: nowrap;
+}

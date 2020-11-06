@@ -1,106 +1,75 @@
 ﻿@model AIOCMS.Models.tbl_Yorum
 
-@{
-    ViewBag.Title = "Details";
-}
+<h2> <a class="btn btn-default" href="@Html.YonetimUrl("Yorum")"><i class="glyphicon glyphicon-chevron-left"></i></a> Yorum Detay</h2>
 
-<h2>Details</h2>
 
 <div>
-    <h4>tbl_Yorum</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.AdiSoyadi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AdiSoyadi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Yorum)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Yorum)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Puan)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Puan)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OlusturmaTarihi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OlusturmaTarihi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.GuncellemeTarihi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.GuncellemeTarihi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SilinmeTarihi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SilinmeTarihi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AktifDurumu)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AktifDurumu)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BegeniSayisi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BegeniSayisi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BegenmemeSayisi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BegenmemeSayisi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tbl_Icerik.Baslik)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tbl_Icerik.Baslik)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tbl_Yorum2.AdiSoyadi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tbl_Yorum2.AdiSoyadi)
-        </dd>
-
-    </dl>
+    <div>
+        <div class="row">
+            <label class="col-md-12">Adı Soyadı : </label>
+            <div class="col-md-12">@Model.AdiSoyadi</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Yorum : </label>
+            <div class="col-md-12">@Model.Yorum</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Puan : </label>
+            <div class="col-md-12">@Model.Puan</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Oluşturulma Tarihi : </label>
+            <div class="col-md-12">@Model.OlusturmaTarihi</div>
+        </div>
+        @if (Model.GuncellemeTarihi != null)
+        {
+            <hr />
+            <div class="row">
+                <label class="col-md-12">Son Güncellenme Tarihi : </label>
+                <div class="col-md-12">@Model.GuncellemeTarihi</div>
+            </div>
+        }
+        @if (Model.SilinmeTarihi != null)
+        {
+            <hr />
+            <div class="row">
+                <label class="col-md-12">Silinme Tarihi : </label>
+                <div class="col-md-12">@Model.SilinmeTarihi</div>
+            </div>
+        }
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Aktiflik Durumu : </label>
+            <div class="col-md-12">@Html.DisplayFor(model => model.AktifDurumu)</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Beğeni Sayisi : </label>
+            <div class="col-md-12">@Model.BegeniSayisi</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Beğenmeme Sayisi : </label>
+            <div class="col-md-12">@Model.BegenmemeSayisi</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">İçerik Başliğı : </label>
+            <div class="col-md-12">@Model.tbl_Icerik.Baslik</div>
+        </div>
+        @if (Model.tbl_Yorum2?.AdiSoyadi != null)
+        {
+            <hr />
+            <div class="row">
+                <label class="col-md-12">Üst Adı Soyadı : </label>
+                <div class="col-md-12">@Model.tbl_Yorum2.AdiSoyadi</div>
+            </div>
+        }
+        <hr /><br />
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
