@@ -85,7 +85,7 @@
 <script>
     function kaliciSil(that) {
         swal({
-            title: "Silmek İstediğinize Eminmisiniz",
+            title: "Kalıcı Olarak Silmek İstediğinize Eminmisiniz",
             text: "Bu İşlemin Gerişi Dönüşü Mümkün Değil",
             icon: "warning",
             buttons: true,
@@ -94,7 +94,8 @@
             .then((status) => {
                 if (status) {
                     var data = "id=" + $(that).attr("data-id");
-                    ajaxSpeak("../Tags/KaliciSil", data, "", function (cevap) {
+                     var url = '@Html.YonetimUrl("Tags/KaliciSil")';
+                    ajaxSpeak(url, data, "", function (cevap) {
                         console.log("İşimi Bitirdim");
                     });
                 }
@@ -111,7 +112,8 @@
             .then((status) => {
                 if (status) {
                     var data = "id=" + $(that).attr("data-id");
-                    ajaxSpeak("../Tags/delete", data, "");
+                     var url = '@Html.YonetimUrl("Tags/delete")';
+                    ajaxSpeak(url, data, "");
                 }
             });
     }
@@ -126,7 +128,8 @@
             .then((status) => {
                 if (status) {
                     var data = "id=" + $(that).attr("data-id");
-                    ajaxSpeak("../Tags/GeriAl", data, "");
+                    var url = '@Html.YonetimUrl("Tags/GeriAl")';
+                    ajaxSpeak(url, data, "");
                 }
             });
     }
