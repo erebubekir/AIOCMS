@@ -9,6 +9,7 @@ namespace AIOCMS.Areas.Yonetim.Data
     {
         success,
         warning,
+        info,
         error
     }
 }

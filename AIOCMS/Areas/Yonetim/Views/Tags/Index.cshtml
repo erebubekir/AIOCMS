@@ -1,83 +1,75 @@
 ﻿@model IEnumerable<AIOCMS.Models.tbl_Tags>
 
-<h2>Tag Yönetimi <a class="btn btn-success pull-right" href="Tags/Create">Yeni Tag Ekle</a></h2>
+<h2>Tag Yönetimi <a class="btn btn-success pull-right" href="@Html.YonetimUrl("Tags/Create")">Yeni Tag Ekle</a></h2>
 <table class="table">
     <tr>
         <th>
             Adı
         </th>
-        <th>
-            Oluşturulma Trh.
-        </th>
-        <th>
-            Güncellenme Trh.
-        </th>
+     
         <th>
             Silinme Trh.
         </th>
-        <th>
-            Durumu
-        </th>
+
         <th>
             Url Adresi
+        </th>
+        <th>
+            Durumu
         </th>
         <th class="text-right">Seçenekler</th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr style="@(item.SilinmeTarihi != null?"background-color:#f5d2d2":"")">
-            <td>
-                @item.Adi
-            </td>
-            <td>
-                @item.OlusturmaTarihi
-            </td>
-            <td>
-                @item.GuncellemeTarihi
-            </td>
-            <td>
-                @item.SilinmeTarihi
-            </td>
-            <td>
-                @if (item.AktifDurumu)
-                {
-                    <a class="btn btn-success" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-ok"></i></a>
-                }
-                else
-                {
-                    <a class="btn btn-default" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-minus"></i></a>
-                }
-            </td>
-            <td>
-                <a href="@Html.BaseUrl(item.Url)" target="_blank"><i class="glyphicon glyphicon-link"></i> @item.Url</a>
-            </td>
-            <td class="text-right">
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
-                {
-                    <a class="btn btn-primary" href="Tags/Edit/@item.Id"><i class="glyphicon glyphicon-edit"></i> Düzenle</a>
-                }
-                |
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Detay, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
-                {
-                    <a class="btn btn-info" href="Tags/Details/@item.Id"><i class="glyphicon glyphicon-info-sign"></i> Detay</a>
-                }
-                |
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi == null)
-                {
-                    <a class="btn btn-warning esitle" data-id="@item.Id" onclick="Delete($(this));"><i class="glyphicon glyphicon-inbox"></i> Sil</a>
-                }
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi != null)
-                {
-                    <a class="btn btn-default esitle" data-id="@item.Id" onclick="GeriAl($(this));"><i class="glyphicon glyphicon-retweet"></i> Geri Al</a>
-                }
-                |
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
-                {
-                    <a class="btn btn-danger" data-id="@item.Id" onclick="kaliciSil($(this));"><i class="glyphicon glyphicon-trash"></i> Kalıcı Sil</a>
-                }
-            </td>
-        </tr>
+<tr style="@(item.SilinmeTarihi != null?"background-color:#f5d2d2":"")">
+    <td>
+        @item.Adi
+    </td>
+    
+    <td>
+        @item.SilinmeTarihi
+    </td>
+
+    <td>
+        <a href="@Html.BaseUrl(item.Url)" target="_blank"><i class="glyphicon glyphicon-link"></i> @item.Url</a>
+    </td>
+    <td >
+        @if (item.AktifDurumu)
+        {
+            <a class="btn btn-success" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-ok"></i></a>
+        }
+        else
+        {
+            <a class="btn btn-default" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-minus"></i></a>
+        }
+    </td>
+    <td class="text-right">
+        @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+        {
+            <a class="btn btn-primary" href="Tags/Edit/@item.Id"><i class="glyphicon glyphicon-edit"></i> Düzenle</a>
+        }
+        |
+        @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Detay, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+        {
+            <a class="btn btn-info" href="Tags/Details/@item.Id"><i class="glyphicon glyphicon-info-sign"></i> Detay</a>
+        }
+        |
+        @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi == null)
+        {
+            <a class="btn btn-warning esitle" data-id="@item.Id" onclick="Delete($(this));"><i class="glyphicon glyphicon-inbox"></i> Sil</a>
+        }
+        @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi != null)
+        {
+            <a class="btn btn-default esitle" data-id="@item.Id" onclick="GeriAl($(this));"><i class="glyphicon glyphicon-retweet"></i> Geri Al</a>
+        }
+        |
+        @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+        {
+            <a class="btn btn-danger" data-id="@item.Id" onclick="kaliciSil($(this));"><i class="glyphicon glyphicon-trash"></i> Kalıcı Sil</a>
+        }
+    </td>
+</tr>
     }
 
 </table>
@@ -95,9 +87,7 @@
                 if (status) {
                     var data = "id=" + $(that).attr("data-id");
                      var url = '@Html.YonetimUrl("Tags/KaliciSil")';
-                    ajaxSpeak(url, data, "", function (cevap) {
-                        console.log("İşimi Bitirdim");
-                    });
+                    ajaxSpeak(url, data, "");
                 }
             });
     }

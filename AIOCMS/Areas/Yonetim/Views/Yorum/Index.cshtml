@@ -8,85 +8,84 @@
 
 <table class="table">
     <tr>
-        <th>Adı Soyadı</th>
+        <th>Adı</th>
         <th>Yorum</th>
         <th>Puan</th>
-        <th>Oluşturma Tarihi</th>
-        <th>Güncelleme Tarihi</th>
-        <th>Silinme Tarihi</th>
-        <th>Aktif Durumu</th>
-        <th>Beğeni Sayısı</th>
-        <th>Beğenmeme Sayısı</th>
+
+
+        <th>Like</th>
+        <th>Dislike</th>
         <th>Başlık</th>
-        <th>Üst Adı Soyadı</th>
+        <th>Cevaplanan</th>
+
+   
+        <th>Silinme Trh.</th>
+        <th>Durumu</th>
         <th class="text-right">Seçenekler</th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr style="@(item.SilinmeTarihi != null?"background-color:#f5d2d2":"")">
-            <td>
-                @item.AdiSoyadi
-            </td>
-            <td>
-                @item.Yorum
-            </td>
-            <td>
-                @item.Puan
-            </td>
-            <td>
-                @item.OlusturmaTarihi
-            </td>
-            <td>
-                @item.GuncellemeTarihi
-            </td>
-            <td>
-                @item.SilinmeTarihi
-            </td>
-            <td>
-                @if (item.AktifDurumu)
-                {
-                    <a class="btn btn-success" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-ok"></i></a>
-                }
-                else
-                {
-                    <a class="btn btn-default" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-minus"></i></a>
-                }
-            </td>
-            <td>
-                @item.BegeniSayisi
-            </td>
-            <td>
-                @item.BegenmemeSayisi
-            </td>
-            <td>
-                @item.tbl_Icerik.Baslik
-            </td>
-            <td>
-                @(item.tbl_Yorum2?.AdiSoyadi)
-            </td>
-            <td class="text-right nowrap">
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Detay, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
-                {
-                    <a class="btn btn-info" href="Yorum/Details/@item.Id"><i class="glyphicon glyphicon-info-sign"></i> Detay</a>
-                }
-                |
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi == null)
-                {
-                    <a class="btn btn-warning esitle" data-id="@item.Id" onclick="Delete($(this));"><i class="glyphicon glyphicon-inbox"></i> Sil</a>
-                }
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi != null)
-                {
-                    <a class="btn btn-default esitle" data-id="@item.Id" onclick="GeriAl($(this));"><i class="glyphicon glyphicon-retweet"></i> Geri Al</a>
-                }
-                |
-                @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
-                {
-                    <a class="btn btn-danger" data-id="@item.Id" onclick="kaliciSil($(this));"><i class="glyphicon glyphicon-trash"></i> Kalıcı Sil</a>
-                }
+<tr style="@(item.SilinmeTarihi != null?"background-color:#f5d2d2":"")">
+    <td>
+        @item.AdiSoyadi
+    </td>
+    <td>
+        @item.Yorum
+    </td>
+    <td>
+        @item.Puan
+    </td>
 
-            </td>
-        </tr>
+
+    <td>
+        @item.BegeniSayisi
+    </td>
+    <td>
+        @item.BegenmemeSayisi
+    </td>
+    <td>
+        @item.tbl_Icerik.Baslik
+    </td>
+    <td>
+        @(item.tbl_Yorum2?.AdiSoyadi)
+    </td>
+    
+    <td>
+        @item.SilinmeTarihi
+    </td>
+    <td>
+        @if (item.AktifDurumu)
+        {
+            <a class="btn btn-success" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-ok"></i></a>
+        }
+        else
+        {
+            <a class="btn btn-default" data-id="@item.Id" onclick="Status($(this));"><i class="glyphicon glyphicon-minus"></i></a>
+        }
+    </td>
+    <td class="text-right nowrap">
+        @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Detay, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+        {
+            <a class="btn btn-info" href="Yorum/Details/@item.Id"><i class="glyphicon glyphicon-info-sign"></i> Detay</a>
+        }
+        |
+        @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Silme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi == null)
+        {
+            <a class="btn btn-warning esitle" data-id="@item.Id" onclick="Delete($(this));"><i class="glyphicon glyphicon-inbox"></i> Sil</a>
+        }
+        @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))) && item.SilinmeTarihi != null)
+        {
+            <a class="btn btn-default esitle" data-id="@item.Id" onclick="GeriAl($(this));"><i class="glyphicon glyphicon-retweet"></i> Geri Al</a>
+        }
+        |
+        @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.KaliciSilme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+        {
+            <a class="btn btn-danger" data-id="@item.Id" onclick="kaliciSil($(this));"><i class="glyphicon glyphicon-trash"></i> Kalıcı Sil</a>
+        }
+
+    </td>
+</tr>
     }
 
 </table>

@@ -46,6 +46,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [Yetki(enmYetkiler.Ekleme)]
         public ActionResult Create()
         {
+           
             ViewBag.UstId = new SelectList(db.tbl_Icerik, "Id", "Baslik");
             return View();
         }
@@ -65,6 +66,8 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                     result
                         .Status(enmStatus.warning)
                         .Message("Adı Alanı Boş Geçilemez");
+                 
+
                   
                 }
                 else if (string.IsNullOrEmpty(istek.Url))
