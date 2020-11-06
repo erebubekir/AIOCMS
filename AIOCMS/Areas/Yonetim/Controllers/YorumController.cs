@@ -142,11 +142,23 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             return Json(result);
         }
 
+        public void AltYorumSil(tbl_Yorum tbl_Yorum)
+        {
+            if (tbl_Yorum != null)
+            {
+                foreach (var item in tbl_Yorum.tbl_Yorum1)
+                {
+                    AltYorumSil(item);
+                }
+                db.tbl_Yorum.RemoveRange(tbl_Yorum.tbl_Yorum1);                
+            }            
+        }
 
         [Yetki(enmYetkiler.KaliciSilme)]
         public JsonResult KaliciSil(int id)
-        {           
+        {
             tbl_Yorum tbl_Yorum = db.tbl_Yorum.SingleOrDefault(d => d.Id == id);
+
             if (tbl_Yorum == null)
             {
                 result
@@ -155,7 +167,10 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 
             }
             else
-            {
+            {      
+                
+                
+                AltYorumSil(tbl_Yorum);
                 db.tbl_Yorum.Remove(tbl_Yorum);
                 db.SaveChanges();
                 result
