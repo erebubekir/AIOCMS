@@ -37,7 +37,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tbl_Yorum tbl_Yorum = db.tbl_Yorum.Find(id);
+            tbl_Yorum tbl_Yorum = db.tbl_Yorum.SingleOrDefault(d => d.Id == id);
             if (tbl_Yorum == null)
             {
                 return HttpNotFound();
@@ -94,7 +94,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             else
             {                
                 //tbl_Yorum.AktifDurumu = false;
-                tbl_Yorum.SilinmeTarihi = DateTime.Now;                                        
+                tbl_Yorum.SilinmeTarihi = DateTime.Now;
                 db.Entry(tbl_Yorum).State = EntityState.Modified;
                 db.SaveChanges();
                 result

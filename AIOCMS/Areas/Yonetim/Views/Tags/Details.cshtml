@@ -16,11 +16,14 @@
             <label class="col-md-12">Oluşturulma Tarihi : </label>
             <div class="col-md-12">@Model.OlusturmaTarihi</div>
         </div>
-        <hr />
-        <div class="row">
-            <label class="col-md-12">Son Güncellenme Tarihi : </label>
-            <div class="col-md-12">@Model.GuncellemeTarihi</div>
-        </div>
+        @if (Model.GuncellemeTarihi != null)
+        {
+            <hr />
+            <div class="row">
+                <label class="col-md-12">Son Güncellenme Tarihi : </label>
+                <div class="col-md-12">@Model.GuncellemeTarihi</div>
+            </div>
+        }
         @if (Model.SilinmeTarihi != null)
         {
             <hr />
