@@ -205,9 +205,20 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                         .Message("Resim Alanı Boş Geçilemez");
                 }
                 else
-                {                    
-                    tbl_Icerik.GuncellemeTarihi = DateTime.Now;
-                    db.Entry(tbl_Icerik).State = EntityState.Modified;
+                {
+                    var data = db.tbl_Icerik.SingleOrDefault(d => d.Id == tbl_Icerik.Id);
+                    data.Baslik = tbl_Icerik.Baslik;
+                    data.Icerik = tbl_Icerik.Icerik;
+                    data.Url = tbl_Icerik.Url;
+                    data.Resim = tbl_Icerik.Resim;
+                    data.UstId = tbl_Icerik.UstId;
+                    data.OnayDurumu = tbl_Icerik.OnayDurumu;
+                    data.IcerikTipi = tbl_Icerik.IcerikTipi;
+                    data.AktifDurumu = tbl_Icerik.AktifDurumu;
+                    data.OkunmaSuresi = tbl_Icerik.OkunmaSuresi;
+                    data.OkunmaSayisi = tbl_Icerik.OkunmaSayisi;
+                    data.GuncellemeTarihi = DateTime.Now;
+                    db.Entry(data).State = EntityState.Modified;
                     db.SaveChanges();
                     result
                        .Status(enmStatus.success)                      
