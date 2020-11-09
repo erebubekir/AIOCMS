@@ -159,7 +159,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
-        public JsonResult Edit(tbl_Tags istek)
+        public JsonResult Edit([Bind(Include = "Id,Adi,Url,GuncellemeTarihi,AktifDurumu")] tbl_Tags istek)
         {
             if (ModelState.IsValid)
             {
@@ -186,8 +186,12 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                 }
                 else
                 {
-                    istek.GuncellemeTarihi = DateTime.Now;
-                    db.Entry(istek).State = EntityState.Modified;
+                    var data = db.tbl_Tags.SingleOrDefault(d => d.Id == istek.Id);
+                    data.Url = istek.Url;
+                    data.Adi = istek.Adi;
+                    data.AktifDurumu = istek.AktifDurumu;
+                    data.GuncellemeTarihi = DateTime.Now;
+                    db.Entry(data).State = EntityState.Modified;
                     db.SaveChanges();
                     result
                         .Status(enmStatus.success)
