@@ -1,131 +1,96 @@
 ﻿@model AIOCMS.Models.tbl_Icerik
 
-@{
-    ViewBag.Title = "Details";
-    Layout = "~/Areas/Yonetim/Views/Shared/_Layout.cshtml";
-}
+<h2> <a class="btn btn-default" href="@Html.YonetimUrl("Icerik")"><i class="glyphicon glyphicon-chevron-left"></i></a> İçerik Detay</h2>
 
-<h2>Details</h2>
 
 <div>
-    <h4>tbl_Icerik</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Baslik)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Baslik)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Icerik)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Icerik)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Url)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Url)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Resim)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Resim)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OlusturmaTarihi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OlusturmaTarihi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.GuncellemeTarihi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.GuncellemeTarihi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SilinmeTarihi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SilinmeTarihi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.AktifDurumu)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.AktifDurumu)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OnayDurumu)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OnayDurumu)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IcerikTipi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IcerikTipi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OkunmaSuresi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OkunmaSuresi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OkunmaSayisi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OkunmaSayisi)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tbl_Icerik2.Baslik)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tbl_Icerik2.Baslik)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tbl_Kullanici.KullaniciAdi)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tbl_Kullanici.KullaniciAdi)
-        </dd>
-
-    </dl>
+    <div>
+        <div class="row">
+            <label class="col-md-12">Baslik : </label>
+            <div class="col-md-12">@Model.Baslik</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Icerik : </label>
+            <div class="col-md-12">@Model.Icerik</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Url : </label>
+            <div class="col-md-12">@Model.Url</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Resim : </label>
+            <div class="col-md-12">@Model.Resim</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Oluşturulma Tarihi : </label>
+            <div class="col-md-12">@Model.OlusturmaTarihi</div>
+        </div>
+        @if (Model.GuncellemeTarihi != null)
+        {
+            <hr />
+            <div class="row">
+                <label class="col-md-12">Son Güncellenme Tarihi : </label>
+                <div class="col-md-12">@Model.GuncellemeTarihi</div>
+            </div>
+        }
+        @if (Model.SilinmeTarihi != null)
+        {
+            <hr />
+            <div class="row">
+                <label class="col-md-12">Silinme Tarihi : </label>
+                <div class="col-md-12">@Model.SilinmeTarihi</div>
+            </div>
+        }
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Aktiflik Durumu : </label>
+            <div class="col-md-12">@Model.AktifDurumu</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Onay Durumu : </label>
+            <div class="col-md-12">@Model.OnayDurumu</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Icerik Tipi : </label>
+            <div class="col-md-12">@Model.IcerikTipi</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Okunma Suresi : </label>
+            <div class="col-md-12">@Model.OkunmaSuresi</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Okunma Sayisi : </label>
+            <div class="col-md-12">@Model.OkunmaSayisi</div>
+        </div>
+        <hr />
+        <div class="row">
+            <label class="col-md-12">Kullanıcı Adı : </label>
+            <div class="col-md-12">@Model.tbl_Kullanici.KullaniciAdi</div>
+        </div>
+        @if (Model.tbl_Icerik2?.Baslik != null)
+        {
+            <hr />
+            <div class="row">
+                <label class="col-md-12">Üst İçerik Başlığı : </label>
+                <div class="col-md-12">@Model.tbl_Icerik2.Baslik</div>
+            </div>
+        }
+        <hr /><br />
+    </div>
 </div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
+    {
+        <a class="btn btn-primary" href="@Html.YonetimUrl("Icerik/Edit/"+Model.Id)"><i class="glyphicon glyphicon-edit"></i> Düzenle</a>
+    }
 </p>

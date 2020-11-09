@@ -226,7 +226,6 @@
     <Content Include="Areas\Yonetim\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Yonetim\Views\Home\Index.cshtml" />
     <Content Include="Areas\Yonetim\Views\Icerik\Create.cshtml" />
-    <Content Include="Areas\Yonetim\Views\Icerik\Delete.cshtml" />
     <Content Include="Areas\Yonetim\Views\Icerik\Details.cshtml" />
     <Content Include="Areas\Yonetim\Views\Icerik\Edit.cshtml" />
     <Content Include="Areas\Yonetim\Views\Icerik\Index.cshtml" />

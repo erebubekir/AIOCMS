@@ -11,7 +11,7 @@ using AIOCMS.Models;
 
 namespace AIOCMS.Areas.Yonetim.Controllers
 {
-    public class IcerikController : Controller
+    public class IcerikController : BaseController
     {
         private CMSDBEntities db = new CMSDBEntities();
 
@@ -32,7 +32,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tbl_Icerik tbl_Icerik = db.tbl_Icerik.Find(id);
+            tbl_Icerik tbl_Icerik = db.tbl_Icerik.SingleOrDefault(d => d.Id == id);
             if (tbl_Icerik == null)
             {
                 return HttpNotFound();
@@ -53,19 +53,96 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Ekleme)]
-        public ActionResult Create(tbl_Icerik tbl_Icerik)
+        public JsonResult Create(tbl_Icerik tbl_Icerik)
         {
             if (ModelState.IsValid)
             {
-                tbl_Icerik.KullaniciId = KullaniciBilgi.Kullanici.Id;
-                tbl_Icerik.OlusturmaTarihi = DateTime.Now;               
-                db.tbl_Icerik.Add(tbl_Icerik);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (string.IsNullOrEmpty(tbl_Icerik.Baslik))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Başlık Alanı Boş Geçilemez");
+                }
+                else if (string.IsNullOrEmpty(tbl_Icerik.Icerik))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Içerik Alanı Boş Geçilemez");
+                }
+                else if (string.IsNullOrEmpty(tbl_Icerik.Url))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Url Alanı Boş Geçilemez");
+                }
+                else if (db.tbl_Icerik.Any(d => d.Url == tbl_Icerik.Url))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Bu Url Başka Bir Yerde Kullanılmış");
+                }
+                else if (string.IsNullOrEmpty(tbl_Icerik.Resim))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Resim Alanı Boş Geçilemez");
+                }
+                else
+                {
+                    tbl_Icerik.KullaniciId = KullaniciBilgi.Kullanici.Id;
+                    tbl_Icerik.OlusturmaTarihi = DateTime.Now;
+                    db.tbl_Icerik.Add(tbl_Icerik);
+                    db.SaveChanges();
+                    result
+                       .Status(enmStatus.success)
+                       .Href("Icerik")
+                       .Message("Kayıt Başarıyla Eklendi");
+
+                }               
+                
             }
-            ViewBag.UstId = new SelectList(db.tbl_Icerik, "Id", "Baslik", tbl_Icerik.UstId);            
-            return View(tbl_Icerik);
+            else
+            {
+                result
+                    .Status(enmStatus.success)
+                    .Message("Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz");
+
+            }
+
+           ViewBag.UstId = new SelectList(db.tbl_Icerik, "Id", "Baslik", tbl_Icerik.UstId);
+            return Json(result);
         }
+
+        [HttpPost]
+        [Yetki(enmYetkiler.Duzenleme)]
+        public JsonResult Status(int id)
+        {
+
+            tbl_Icerik tbl_Icerik = db.tbl_Icerik.SingleOrDefault(d => d.Id == id);
+            if (tbl_Icerik == null)
+            {
+                result
+                    .Status(enmStatus.error)
+                    .Message("Bişeyler Yanlış Gidiyor");
+
+
+            }
+            else
+            {
+                tbl_Icerik.AktifDurumu = !tbl_Icerik.AktifDurumu;
+                db.Entry(tbl_Icerik).State = EntityState.Modified;
+                db.SaveChanges();
+                result
+                  .Status(enmStatus.success)
+                  .Reload();
+
+            }
+            return Json(result);
+        }
+
+
+
+
 
         [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
         public ActionResult Edit(int? id)
@@ -93,26 +170,74 @@ namespace AIOCMS.Areas.Yonetim.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Yetki(enmYetkiler.Duzenleme | enmYetkiler.Ekleme)]
-        public ActionResult Edit(tbl_Icerik tbl_Icerik)
+        public JsonResult Edit(tbl_Icerik tbl_Icerik)
         {
             if (ModelState.IsValid)
             {
-                tbl_Icerik.GuncellemeTarihi = DateTime.Now;
-                db.Entry(tbl_Icerik).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (string.IsNullOrEmpty(tbl_Icerik.Baslik))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Başlık Alanı Boş Geçilemez");
+                }
+                else if (string.IsNullOrEmpty(tbl_Icerik.Icerik))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Içerik Alanı Boş Geçilemez");
+                }
+                else if (string.IsNullOrEmpty(tbl_Icerik.Url))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Url Alanı Boş Geçilemez");
+                }
+                else if (db.tbl_Icerik.Any(d => d.Url == tbl_Icerik.Url && d.Id != tbl_Icerik.Id))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Bu Url Başka Bir Yerde Kullanılmış");
+                }
+                else if (string.IsNullOrEmpty(tbl_Icerik.Resim))
+                {
+                    result
+                        .Status(enmStatus.warning)
+                        .Message("Resim Alanı Boş Geçilemez");
+                }
+                else
+                {                    
+                    tbl_Icerik.GuncellemeTarihi = DateTime.Now;
+                    db.Entry(tbl_Icerik).State = EntityState.Modified;
+                    db.SaveChanges();
+                    result
+                       .Status(enmStatus.success)                      
+                       .Message("Kayıt Başarıyla Güncellendi")
+                       .Reload();
+                }
+
             }
+            else
+            {
+                result
+                    .Status(enmStatus.error)
+                    .Message("Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz");
+
+            }
+
             ViewBag.UstId = new SelectList(db.tbl_Icerik, "Id", "Baslik", tbl_Icerik.UstId);
-            return View(tbl_Icerik);
+            return Json(result);
         }
 
-        // GET: Yonetim/Icerik/Delete/5
+        
+        [HttpPost]
         [Yetki(enmYetkiler.Silme)]
-        public ActionResult Delete(int? id)
+        public JsonResult Delete(int? id)
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                result
+                   .Status(enmStatus.error)
+                   .Message("Bişeyler Yanlış Gidiyor");
             }
             var icerikSorgum = db.tbl_Icerik.AsQueryable();
             if (!KullaniciBilgi.YetkiliMi(enmYetkiler.ButunYetkiler, RouteData))
@@ -121,21 +246,68 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             tbl_Icerik tbl_Icerik = icerikSorgum.SingleOrDefault(d => d.Id == id);
             if (tbl_Icerik == null)
             {
-                return HttpNotFound();
+                result
+                 .Status(enmStatus.error)
+                 .Message("Bişeyler Yanlış Gidiyor");
             }
-            tbl_Icerik.SilinmeTarihi = DateTime.Now;
-            tbl_Icerik.AktifDurumu = false;
-            db.Entry(tbl_Icerik).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            else
+            {
+                tbl_Icerik.SilinmeTarihi = DateTime.Now;
+                //tbl_Icerik.AktifDurumu = false;
+                db.Entry(tbl_Icerik).State = EntityState.Modified;
+                db.SaveChanges();
+                result
+                  .Status(enmStatus.success)
+                  .Message("Başarıyla Geri Dönüşüme Gönderildi")
+                  .Reload();
+            }
+            return Json(result);
         }
+
+
+        [HttpPost]
+        [Yetki(enmYetkiler.KaliciSilme)]
+        public JsonResult GeriAl(int? id)
+        {
+            if (id == null)
+            {
+                result
+                    .Status(enmStatus.error)
+                    .Message("Bişeyler Yanlış Gidiyor");
+
+            }
+            tbl_Icerik tbl_Icerik = db.tbl_Icerik.SingleOrDefault(d => d.Id == id);
+            if (tbl_Icerik == null)
+            {
+                result
+                  .Status(enmStatus.error)
+                  .Message("Bişeyler Yanlış Gidiyor");
+
+            }
+            else
+            {
+                tbl_Icerik.SilinmeTarihi = null;
+                db.Entry(tbl_Icerik).State = EntityState.Modified;
+                db.SaveChanges();
+                result
+                  .Status(enmStatus.success)
+                  .Message("Başarıyla Geri Yüklendi")
+                  .Reload();
+
+            }
+
+            return Json(result);
+        }
+
+
         /// <summary>
         /// Icerik Kalıcı olarak silinir Bütün yetkiler varsa kullanıcının kim olduğuna bakılmaz
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [HttpPost]
         [Yetki(enmYetkiler.KaliciSilme)]
-        public ActionResult KaliciSil(int id)
+        public JsonResult KaliciSil(int id)
         {
             var icerikSorgum = db.tbl_Icerik.AsQueryable();
             if (!KullaniciBilgi.YetkiliMi(enmYetkiler.ButunYetkiler, RouteData))
@@ -143,11 +315,20 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             tbl_Icerik tbl_Icerik = icerikSorgum.SingleOrDefault(d => d.Id == id);
             if (tbl_Icerik == null)
             {
-                return HttpNotFound();
+                result
+                   .Status(enmStatus.error)
+                   .Message("Bişeyler Yanlış Gidiyor");
             }
-            db.tbl_Icerik.Remove(tbl_Icerik);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            else
+            {
+                db.tbl_Icerik.Remove(tbl_Icerik);
+                db.SaveChanges();
+                result
+                .Status(enmStatus.success)
+                .Message("Başarılı Bir Şekilde Silindi")
+                .Reload();
+            }
+            return Json(result);
         }
 
         protected override void Dispose(bool disposing)

@@ -109,7 +109,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 
         // GET: Yonetim/Tags/Delete/5
         [HttpPost]
-        [Yetki(enmYetkiler.Silme)]
+        [Yetki(enmYetkiler.KaliciSilme)]
         public JsonResult GeriAl(int? id)
         {
             if (id == null)

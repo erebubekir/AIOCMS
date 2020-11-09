@@ -100,7 +100,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             else
             {
                 result
-                    .Status(enmStatus.success)
+                    .Status(enmStatus.error)
                     .Message("Bişeyler Eksik Lütfen Tüm Alanları Doldurunuz");
            
             }
@@ -208,7 +208,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             return Json(result);
         }
 
-        // GET: Yonetim/Tags/Delete/5
+        
         [HttpPost]
         [Yetki(enmYetkiler.Silme)]
         public JsonResult Delete(int? id)
@@ -243,7 +243,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
             return Json(result);
         }
 
-        // GET: Yonetim/Tags/Delete/5
+        
         [HttpPost]
         [Yetki(enmYetkiler.KaliciSilme)]
         public JsonResult GeriAl(int? id)

@@ -1,136 +1,113 @@
 ﻿@model AIOCMS.Models.tbl_Icerik
 
-@{
-    ViewBag.Title = "Create";
-    Layout = "~/Areas/Yonetim/Views/Shared/_Layout.cshtml";
-}
+<h2> <a class="btn btn-default" href="@Html.YonetimUrl("Icerik")"><i class="glyphicon glyphicon-chevron-left"></i></a> İçerik Ekle</h2>
 
-<h2>Create</h2>
-
-@using (Html.BeginForm()) 
-{
+<form onsubmit="return create($(this));">
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>tbl_Icerik</h4>
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Baslik, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">Baslik</label>
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.Baslik, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Baslik, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Icerik, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">Icerik</label>
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.Icerik, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Icerik, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">Url</label>
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Resim, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">Resim</label>
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.Resim, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Resim, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UstId, "UstId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">Üst Id</label>
+            <div class="col-md-12">
                 @Html.DropDownList("UstId", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UstId, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div> 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.OlusturmaTarihi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OlusturmaTarihi, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OlusturmaTarihi, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.GuncellemeTarihi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.GuncellemeTarihi, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.GuncellemeTarihi, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SilinmeTarihi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SilinmeTarihi, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SilinmeTarihi, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AktifDurumu, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
+            <label class="col-md-12">Aktiflik Durumu</label>
+            <div class="col-md-12">
+                <div class="checkbox" style="padding-left:20px;">
                     @Html.EditorFor(model => model.AktifDurumu)
                     @Html.ValidationMessageFor(model => model.AktifDurumu, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
 
-    
-
         <div class="form-group">
-            @Html.LabelFor(model => model.OnayDurumu, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">Onay Durumu</label>
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.OnayDurumu, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.OnayDurumu, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IcerikTipi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">İçerik Tipi</label>
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.IcerikTipi, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.IcerikTipi, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.OkunmaSuresi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">Okunma Süresi</label>
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.OkunmaSuresi, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.OkunmaSuresi, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.OkunmaSayisi, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-md-12">Okunma Sayısı</label>
+            <div class="col-md-12">
                 @Html.EditorFor(model => model.OkunmaSayisi, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.OkunmaSayisi, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="col-md-12">
+                <input type="submit" value="Ekle" class="btn btn-default" />
             </div>
         </div>
     </div>
+</form>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<script>
+    function create(that) {
+        var formData = $(that).serialize();
+        ajaxSpeak("", formData, "");
+        return false;
+    }
+</script>

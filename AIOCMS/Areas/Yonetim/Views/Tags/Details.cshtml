@@ -37,7 +37,7 @@
         <hr />
         <div class="row">
             <label class="col-md-12">Aktiflik Durumu : </label>
-            <div class="col-md-12">@Html.DisplayFor(model => model.AktifDurumu)</div>
+            <div class="col-md-12">@Model.AktifDurumu</div>
         </div>
 
         <hr />
@@ -52,6 +52,6 @@
 <p>
     @if (AIOCMS.Areas.Yonetim.Data.KullaniciBilgi.YetkiliMi(AIOCMS.Areas.Yonetim.Data.enmYetkiler.Duzenleme, RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current))))
     {
-        <a class="btn btn-primary" href="Tags/Edit/@Model.Id"><i class="glyphicon glyphicon-edit"></i> Düzenle</a>
+        <a class="btn btn-primary" href="@Html.YonetimUrl("Tags/Edit/"+Model.Id)"><i class="glyphicon glyphicon-edit"></i> Düzenle</a>
     }
 </p>
