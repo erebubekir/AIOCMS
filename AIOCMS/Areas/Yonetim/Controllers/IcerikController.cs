@@ -273,8 +273,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                   .Reload();
             }
             return Json(result);
-        }
-
+        }     
 
         [HttpPost]
         [Yetki(enmYetkiler.KaliciSilme)]
@@ -309,7 +308,7 @@ namespace AIOCMS.Areas.Yonetim.Controllers
 
             return Json(result);
         }
-
+          
 
         /// <summary>
         /// Icerik Kalıcı olarak silinir Bütün yetkiler varsa kullanıcının kim olduğuna bakılmaz
@@ -331,7 +330,16 @@ namespace AIOCMS.Areas.Yonetim.Controllers
                    .Message("Bişeyler Yanlış Gidiyor");
             }
             else
-            {
+            {              
+                foreach (var item in tbl_Icerik.tbl_Icerik1.ToList())
+                {
+                    if (tbl_Icerik.tbl_Icerik2 != null)
+                        item.UstId = tbl_Icerik.tbl_Icerik2.Id;
+                    else
+                        item.UstId = null;
+                    db.Entry(item).State = EntityState.Modified;                   
+                }
+                db.tbl_Yorum.RemoveRange(tbl_Icerik.tbl_Yorum);
                 db.tbl_Icerik.Remove(tbl_Icerik);
                 db.SaveChanges();
                 result
